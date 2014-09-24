@@ -17,7 +17,7 @@
 		<tr><td>Population</td><td><input type="text" name="population"></td></tr>
 		</tbody></table>
 		<input type="submit" value="Save">
-		<input type="button" value="Cancel" onclick="top.location.href='lab4.php';">
+		<input type="button" value="Cancel" href="index.php">
 		</form>
 
 	</body>

@@ -14,7 +14,7 @@
 	</head>
 	<body>
 
-		<form method="POST" action="/localhost/lab4/index.php">
+		<form method="POST" action="index.php">
 		    Search for a :
 		    <input type="radio" name="search_by" checked="true" value="country">Country 
 		    <input type="radio" name="search_by" value="city">City
@@ -23,7 +23,7 @@
 		    <input type="submit" name="submit" value="Submit">
 		</form>
 		<hr>
-		Or insert a new city by clicking this <a href="exec.php?action=insert">link</a>
+		Or insert a new city by clicking this <a href="insert.php">link</a>
 	</body>
 </html>
 
@@ -39,14 +39,15 @@
 			
 			 if(!empty($_POST)){
 
-				 $num = $_POST['query']; 
+				 $table = $_POST['search_by'];
+				 $stuff = "B%";
 
-				 //switch statment for selecting the query for the user
+				 $result = pg_prepare($conn, "country_lookup", 'SELECT * FROM 
+                 lab4.country WHERE country_code LIKE $1') or die("Prepare fail: ".pg_last_error());
+
+				 $result = pg_execute($conn, "country_lookup",array($stuff)) or die("Query fail: ".pg_last_error());
 				
 
-				 /*
-				//getting the query results
-				$result = pg_query($query) or die('Query failed: ' . pg_last_error());
 				 //Printing results in HTML
 				echo "There where <em>" . pg_num_rows($result) . "</em> rows returned<br><br>\n";
 				echo "<table border='1'>\n";
@@ -70,7 +71,7 @@
 				}
 				echo "</table>\n";
 				// Free resultset
-				pg_free_result($result);*/
+				pg_free_result($result);
 				// Closing connection
 				pg_close($conn);
 

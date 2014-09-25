@@ -5,6 +5,12 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 		<link rel="stylesheet" href="foundation-5.4.0/css/foundation.css" />
     	<script src="foundation-5.4.0/js/vendor/modernizr.js"></script>
+    	<style>
+    	  .imp .imp2{
+    	  	postion:absolute;
+    	  	right: 300px;
+    	  }
+    	</style>
 	</head>
 	<body>
 
@@ -13,18 +19,38 @@
 		    <input type="radio" name="search_by" checked="true" value="country">Country 
 		    <input type="radio" name="search_by" value="city">City
 		    <input type="radio" name="search_by" value="language">Language <br><br>
-		    That begins with: <input type="text" name="query_string" value=""> <br><br>
-		    <input type="submit" name="submit" value="Submit">
+		    <div class="row left">
+			    <div>
+			    	<label for="left-label" class="left inline">That begins with:</label>
+			    </div>
+			    <div class="large-4 columns">
+			    	<input type="text" name="query_string" value="">
+			    </div>
+			</div>
+			<div class="row left">
+		    	<div class="large-2"><input type="submit" class="left" name="submit" value="Submit"></div>
+		    </div>
 		</form>
 		<hr>
 		Or insert a new city by clicking this <a href="#" data-reveal-id="myModal">link</a>
-		
+
 
 		<div id="myModal" class="reveal-modal" data-reveal>
-		  <h2>Awesome. I have it.</h2>
-		  <p class="lead">Your couch.  It is mine.</p>
-		  <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
-		  <a class="close-reveal-modal">&#215;</a>
+			<form method="POST" action="/~klaricm/fs14/cs3380/lab4/exec.php">
+				<input type="hidden" name="action" value="save_insert">
+				Enter data for the city to be added: <br>
+				<table border="1">
+				<tbody><tr><td>Name</td><td><input type="text" name="name"></td></tr>
+				<tr><td>Country Code</td><td><select name="country_code">
+					<option value="BHS">Bahamas</option>
+					<option value="BHR">Bahrain</option>
+				</select></td></tr>
+				<tr><td>District</td><td><input type="text" name="district"></td></tr>
+				<tr><td>Population</td><td><input type="text" name="population"></td></tr>
+				</tbody></table>
+				<input type="submit" value="Save">
+				<input type="button" value="Cancel"class="close-reveal-modal">
+			</form>
 		</div>
 	</body>
 </html>

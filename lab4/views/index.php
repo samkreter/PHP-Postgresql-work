@@ -3,8 +3,6 @@
 		<meta charset="UTF-8">
 		<title>CS 3380 Lab 4</title>
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-		<link rel="stylesheet" href="foundation-5.4.0/css/foundation.css" />
-    	<script src="foundation-5.4.0/js/vendor/modernizr.js"></script>
 	</head>
 	<body>
 
@@ -17,15 +15,7 @@
 		    <input type="submit" name="submit" value="Submit">
 		</form>
 		<hr>
-		Or insert a new city by clicking this <a href="#" data-reveal-id="myModal">link</a>
-		
-
-		<div id="myModal" class="reveal-modal" data-reveal>
-		  <h2>Awesome. I have it.</h2>
-		  <p class="lead">Your couch.  It is mine.</p>
-		  <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
-		  <a class="close-reveal-modal">&#215;</a>
-		</div>
+		Or insert a new city by clicking this <a href="insert.php">link</a>
 	</body>
 </html>
 
@@ -87,10 +77,5 @@
 
 		?>
 
-		<script src="foundation-5.4.0/js/vendor/jquery.js"></script>
-	    <script src="foundation-5.4.0/js/foundation.min.js"></script>
-	    <script>
-	      $(document).foundation();
-	    </script>
 	</body>
 </html>

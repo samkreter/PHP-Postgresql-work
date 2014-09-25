@@ -1,12 +1,12 @@
 <?php
 
-DEFINE("HOST","host=dbhost-pgsql.cs.missouri.edu");
+DEFINE("HOST","host=localhost");
 
-DEFINE("DBNAME","dbname=sakfy6");
+DEFINE("DBNAME","dbname=kreter");
 
-DEFINE("USERNAME","user=sakfy6");
+DEFINE("USERNAME","user=kreter");
 
-DEFINE("PASSWORD","password=3rAHuCgc");
+DEFINE("PASSWORD","password=layellow25");
 
 ?>
 

@@ -36,7 +36,7 @@
 
 				 //Printing results in HTML
 				echo "There where <em>" . pg_num_rows($result) . "</em> rows returned<br><br>\n";
-				echo "<table>";
+				echo "<table border='1'>";
 				
 				echo "<tr>";
 				//checking the number of fields return to populate header 
@@ -51,11 +51,22 @@
 				while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 				 echo "\t<tr>\n";
 
-				 echo '<form method="POST" action="<?=$_SERVER[\'PHP_SELF\']?>>'
-				 echo '<input type="button" name="type" value="Edit">'
-			     echo '<input type="button" name="type" value="Remove">'
-				 echo '<input type="hidden" name="foo" value="bar" />'
-				 echo '</form>'
+				 if($_POST['search_by'] == "city"){
+				 	$pkey = "id";
+				 }
+				 else {
+				 	$pkey = "country_code";
+				 }
+				 echo '<td>';
+				 echo '<form method="POST" action="<?=$_SERVER[\'PHP_SELF\']?>">';
+				 echo '<input type="button" name="type" value="Edit"/>';
+			     echo '<input type="button" name="type" value="Remove"/>';
+				 echo '<input type="hidden" name="pkey" value="'.$pkey.'"/>';
+				 echo '</form>';
+				 echo '</td>';
+				
+
+				
 
 				 foreach ($line as $col_value) {
 					 

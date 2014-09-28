@@ -2,6 +2,79 @@
 <?php
 
 	
+	function insert($name,$cCode,$district,$population){
+
+		$result = pg_prepare($GLOBALS['conn'], "city_insert", 'INSERT INTO lab4.city VALUES(DEFAULT,$1,$2,$3,$4)')
+		or die("Prepare fail: ".pg_last_error());
+		if(pg_execute($GLOBALS['conn'], "city_insert",array($name,$cCode,$district,$population))){
+			echo "als;jdkffffffffffffffffffffffffffffffffffffffffff";
+		}
+		else{
+			echo "nonnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn";
+		}
+
+	}
+
+	function remove($pkey, $search_by){
+
+		if($search_by == "city"){
+			$result = pg_prepare($GLOBALS['conn'], "city_delete", 'DELETE FROM lab4.city AS ci WHERE ci.id ='.$pkey)
+			or die("Prepare fail: ".pg_last_error());
+			if(pg_execute($GLOBALS['conn'], "city_delete",array())){
+				echo "IT worked bro";
+			}
+			else{
+				echo "it messed up bro";
+			}
+		}
+		else if($search_by == "country"){
+			$result = pg_prepare($GLOBALS['conn'], "country_delete", "DELETE FROM lab4.country AS co WHERE co.country_code ILIKE '$pkey'")
+			or die("Prepare fail: ".pg_last_error());
+			if(pg_execute($GLOBALS['conn'], "country_delete",array())){
+				echo "it worked";
+			}
+			else{
+				echo "not so working";
+			}
+		}
+		else if($search_by == "language"){
+			$result = pg_prepare($GLOBALS['conn'], "langauge_delete", "DELETE FROM lab4.country_language AS lang WHERE lang.country_code ILIKE '$pkey'")
+			or die("Prepare fail: ".pg_last_error());
+			if(pg_execute($GLOBALS['conn'], "langauge_delete",array()) or die(pg_last_error())){
+				echo "it worked";
+			}
+			else{
+				echo "not so working";
+			}	
+		}
+		
+	}
+
+	function edit(){
+
+		$fields = array("country_code",
+						"name",
+						"continent",
+						"region",
+					    "surface_area",
+					    "indep_year",	
+						"population",	
+						"life_expectancy",	
+						"gnp",	
+						"gnp_old",	
+						"local_name",	
+						"government_form",	
+						"head_of_state",	
+						"capital",	
+						"code2")
+
+		
+
+
+	}
+
+
+
 	function displayinsert(){
 		
 	?>
@@ -16,14 +89,13 @@
 					</div>
 					<tr><td>Country Code</td><td><select name="country_code">
 						<?php 
-
-							$result = pg_prepare($conn, "country_lookup", 'SELECT co.country_code, co.name FROM 
+							$result = pg_prepare($GLOBALS['conn'], "poplist", 'SELECT co.country_code, co.name FROM 
 			                lab4.country AS co') or die("Prepare fail: ".pg_last_error());
-			                $result = pg_execute($conn, "country_lookup",array()) or die("Query fail: ".pg_last_error());
+			                $result = pg_execute($GLOBALS['conn'], "poplist",array()) or die("Query fail: ".pg_last_error());
 							
 			                while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 
-								echo "<option value=\"".$line['country_code']."\">".$line["name"]."</option>";
+								echo "<option value=\"".$line['country_code']."\">".$line["name"]."</option>\n";
 							}
 						?>
 					</select></td></tr>

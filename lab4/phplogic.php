@@ -1,131 +1,21 @@
 <?php
 			//including the nesesary things for the database connection 
 			require("../secure/database.php");
-			require("insert.php");
 			
 			 //create connection with database
 			
-			global $conn;
 
 			$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD) 
 			 or die('Could not connect: ' . pg_last_error());
 
 
+			 require("viewfuncs.php");
 
-	function displayinsert(){
-		
-		$dbconn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD) 
-			 or die('Could not connect: ' . pg_last_error());
-	
-	echo	'<form method="POST" action="index.php" data-abide>
-				<div class="row">
-					<input type="hidden" name="action" value="save_insert">
-					Enter data for the city to be added: <br>
-					<table border="1">
-					<div class="name-field">
-						<tbody><tr><td>Name</td><td><input type="text" name="name" required></td></tr>
-						<small class="error">Name is required and must be a string.</small>
-					</div>
-					<tr><td>Country Code</td><td><select name="country_code">';
-
-							$sresult = pg_prepare($dbconn, "poplist", 'SELECT co.country_code, co.name FROM 
-			                lab4.country AS co') or die("Prepare fail: ".pg_last_error());
-			                $sresult = pg_execute($dbconn, "poplist",array()) or die("Query fail: ".pg_last_error());
-							
-			                while ($line = pg_fetch_array($sresult, null, PGSQL_ASSOC)) {
-
-								echo "<option value=\"".$line['country_code']."\">".$line["name"]."</option>";
-							}
-				
-			echo	 '	</select></td></tr>
-					<div class"district-field">
-						<tr><td>District</td><td><input type="text" name="district" required></td></tr>
-						<small class="error">District is required and must be a string.</small>
-					</div>
-					<div class="population-field">
-						<tr><td>Population</td><td><input type="text" name="population" required pattern="number"></td></tr>
-						<small class="error">Population is required and must be a number.</small>
-					</div>
-					</tbody></table>
-				</div>
-				<div class="row left">
-					<div><input type="submit" class="button"value="Save"></div>
-					<a class="close-reveal-modal">&#215;</a>
-				</div>
-		</form>';
-
-		pg_free_result($sresult);
-				// Closing connection
-				pg_close($dbconn);
-	
-	}
-
-
-	function displayedit(){
-		?>
-		<form method="POST" action="">
-			<input type="hidden" name="pk" value="GHA:Akan"><input type="hidden" name="tbl" value="language"><input type="hidden" name="action" value="save_edit"><table border="1">
-				<tbody><tr>
-					<td>country_code</td>
-					<td>GHA</td>
-				</tr>
-				<tr>
-					<td>language</td>
-					<td>Akan</td>
-				</tr>
-				<tr>
-					<td><strong>is_official</strong></td>
-					<td><input type="text" name="is_official" value="f"></td>
-				</tr>
-				<tr>
-					<td><strong>percentage</strong></td>
-					<td><input type="text" name="percentage" value="52.4"></td>
-				</tr>
-			</tbody></table>
-			<input type="submit" value="Save">
-			<input type="button" value="Cancel" onclick="top.location.href='lab4.php';">
-		</form>
-		<?php
-	}
-
-	function displayDelete(){
-		echo "<b>Delete was successful</b>";
-	}
-
-	function validation(){
-
-		?>
-
-				<form data-abide>
-		  <div class="name-field">
-		    <label>Your name <small>required</small>
-		      <input type="text" required pattern="[a-zA-Z]+">
-		    </label>
-		    <small class="error">Name is required and must be a string.</small>
-		  </div>
-		  <div class="email-fie">
-		    <label>Email <small>required</small>
-		      <input type="email" required>
-		    </label>
-		    <small class="error">An email address is required.</small>
-		  </div>
-		  <button type="submit">Submit</button>
-		</form>
-	
-	<?php
-	}
-
-
-
-
-			
-			
-			 if(!empty($_POST)){
-
-				 remove();
+			$search_by;
 
 				if(isset($_POST['search_by'])){
 
+					$search_by = $_POST['search_by'];
 					$userInput = htmlspecialchars($_POST['query_string']);
 					$userInput = $userInput."%";	
 
@@ -144,7 +34,7 @@
 		                lab4.country_language AS la WHERE la.language ILIKE $1') or die("Prepare fail: ".pg_last_error());
 		                $result = pg_execute($conn, "language_lookup",array($userInput)) or die("Query fail: ".pg_last_error());
 					}
-				}
+				
 				
 
 				 //Printing results in HTML
@@ -171,17 +61,21 @@
 				while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 				 echo "\t<tr>\n";
 
-				 if($_POST['search_by'] == "city"){
+				 if($search_by == "city"){
 				 	$pkey = "id";
 				 }
 				 else {
 				 	$pkey = "country_code";
 				 }
+
 				 echo '<td>';
-				 echo '<form method="POST" action="<?=$_SERVER[\'PHP_SELF\']?>">';
+				 ?>
+				 <form method="POST" action="<?=$_SERVER['PHP_SELF']?>">
+				 <?php
 				 echo '<input type="submit" class""name="type" value="Edit"/>';
 			     echo '<input type="submit" name="type" value="Remove"/>';
 				 echo '<input type="hidden" name="pkey" value="'.$line[$pkey].'"/>';
+				 echo '<input type="hidden" name="table" value="'.$search_by.'"/>';
 				 echo '</form>';
 				 echo '</td>';
 				
@@ -194,11 +88,34 @@
 				 echo "\t</tr>\n";
 				}
 				echo "</table>\n";
+				
+			
 				// Free resultset
 				pg_free_result($result);
 				// Closing connection
 				pg_close($conn);
-
-
 			}
+
+
+			if(isset($_POST['action'])){
+				//insert(htmlspecialchars($_POST['name'], $_POST['country_code'],
+				//htmlspecialchars($_POST['district']),htmlspecialchars($_POST['population'])));
+				insert(htmlspecialchars($_POST['name']),$_POST['country_code'],$_POST['district'],$_POST['population']);
+			}
+
+			if(isset($_POST['type'])){
+
+				echo $search_by;
+				if($_POST['type'] == "Remove"){
+					remove($_POST['pkey'],$_POST['table']);
+				}
+				else{
+					echo "YOU MESSED UP BRO";
+				}
+			}
+
+				
+
+
+			
 ?>

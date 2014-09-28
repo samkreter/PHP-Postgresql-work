@@ -1,6 +1,9 @@
 	
 <?php
 
+	require("../secure/database.php");
+	$dbconn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD) 
+			 or die('Could not connect: ' . pg_last_error());
 	
 	function displayinsert(){
 		
@@ -17,11 +20,11 @@
 					<tr><td>Country Code</td><td><select name="country_code">
 						<?php 
 
-							$result = pg_prepare($conn, "country_lookup", 'SELECT co.country_code, co.name FROM 
+							$sresult = pg_prepare($GLOBALS['dbconn'], "poplist", 'SELECT co.country_code, co.name FROM 
 			                lab4.country AS co') or die("Prepare fail: ".pg_last_error());
-			                $result = pg_execute($conn, "country_lookup",array()) or die("Query fail: ".pg_last_error());
+			                $sresult = pg_execute($GLOBALS['dbconn'], "poplist",array()) or die("Query fail: ".pg_last_error());
 							
-			                while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+			                while ($line = pg_fetch_array($sresult, null, PGSQL_ASSOC)) {
 
 								echo "<option value=\"".$line['country_code']."\">".$line["name"]."</option>";
 							}

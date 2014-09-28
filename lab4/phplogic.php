@@ -1,11 +1,18 @@
 <?php
 			//including the nesesary things for the database connection 
-			include("../secure/database.php");
-			include("insert.php");
+			require("../secure/database.php");
+			require("insert.php");
 			
 			 //create connection with database
 			$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD) 
 			 or die('Could not connect: ' . pg_last_error());
+
+
+			 require("viewfuncs.php");
+
+
+
+
 			
 			
 			 if(!empty($_POST)){

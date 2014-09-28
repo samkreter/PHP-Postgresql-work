@@ -1,5 +1,5 @@
 <html>
-	<?php include("views/insert.php"); ?>
+	<?php require("viewfuncs.php"); ?>
 	<head>
 		<meta charset="UTF-8">
 		<title>CS 3380 Lab 4</title>
@@ -32,7 +32,7 @@
 
 		<div id="myModal" class="reveal-modal" data-reveal>
 			<?php //echo file_get_contents("views/insert.php")
-				displayinsert();
+				displayinsert($conn);
 			?>
 		</div>
 

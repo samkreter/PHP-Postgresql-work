@@ -1,5 +1,5 @@
 <html>
-	<?php require("viewfuncs.php"); ?>
+	<?php //require("viewfuncs.php"); ?>
 	<head>
 		<meta charset="UTF-8">
 		<title>CS 3380 Lab 4</title>
@@ -30,11 +30,6 @@
 		Or insert a new city by clicking this <a href="#" data-reveal-id="myModal">link</a>
 
 
-		<div id="myModal" class="reveal-modal" data-reveal>
-			<?php //echo file_get_contents("views/insert.php")
-				displayinsert($conn);
-			?>
-		</div>
 
 		<?php
 			
@@ -43,6 +38,11 @@
    			
 
 		?>
+		<div id="myModal" class="reveal-modal" data-reveal>
+			<?php //echo file_get_contents("views/insert.php")
+				displayinsert($conn);
+			?>
+		</div>
 
 		<script src="foundation-5.4.0/js/vendor/jquery.js"></script>
 	    <script src="foundation-5.4.0/js/foundation.min.js"></script>

@@ -1,6 +1,7 @@
 <?php
 			//including the nesesary things for the database connection 
 			include("../secure/database.php");
+			include("insert.php");
 			
 			 //create connection with database
 			$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD) 
@@ -9,7 +10,7 @@
 			
 			 if(!empty($_POST)){
 
-				 
+				 remove();
 
 				if(isset($_POST['search_by'])){
 
@@ -36,17 +37,24 @@
 
 				 //Printing results in HTML
 				echo "There where <em>" . pg_num_rows($result) . "</em> rows returned<br><br>\n";
+				
+
 				echo "<table border='1'>";
 				
+				//account for added form row
 				echo "<tr>";
+				echo "<th width=\"135\">Action</th>";
+
 				//checking the number of fields return to populate header 
 				$numFields = pg_num_fields($result);
 				//populating the header 
 				for($i = 0;$i < $numFields; $i++){
 				  $fieldName = pg_field_name($result, $i);
-				  echo "\t\t<th>" . $fieldName . "</th>\n";
+				  echo "<th width=\"135\">" . $fieldName . "</th>\n";
 				}
+
 				echo "</tr>";
+		
 				//populating table with the results 
 				while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 				 echo "\t<tr>\n";
@@ -59,13 +67,12 @@
 				 }
 				 echo '<td>';
 				 echo '<form method="POST" action="<?=$_SERVER[\'PHP_SELF\']?>">';
-				 echo '<input type="button" name="type" value="Edit"/>';
-			     echo '<input type="button" name="type" value="Remove"/>';
-				 echo '<input type="hidden" name="pkey" value="'.$pkey.'"/>';
+				 echo '<input type="submit" class""name="type" value="Edit"/>';
+			     echo '<input type="submit" name="type" value="Remove"/>';
+				 echo '<input type="hidden" name="pkey" value="'.$line[$pkey].'"/>';
 				 echo '</form>';
 				 echo '</td>';
 				
-
 				
 
 				 foreach ($line as $col_value) {

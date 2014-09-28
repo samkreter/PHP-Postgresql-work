@@ -5,7 +5,7 @@
 					<table border="1">
 					<tbody><tr><td>Name</td><td><input type="text" name="name"></td></tr>
 					<tr><td>Country Code</td><td><select name="country_code">
-						<option value="BHS">Bahamas</option>
+				    	<option value=$line["country_code"]?>>Bahamas</option>
 						<option value="BHR">Bahrain</option>
 					</select></td></tr>
 					<tr><td>District</td><td><input type="text" name="district"></td></tr>

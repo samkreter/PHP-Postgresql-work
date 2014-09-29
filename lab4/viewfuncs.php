@@ -1,7 +1,11 @@
 	
 <?php
 
-	
+	//all helper functions for all of the necessary actions 
+
+
+
+	//logic for the insert page 
 	function insert($name,$cCode,$district,$population){
 
 		$result = pg_prepare($GLOBALS['conn'], "city_insert", 'INSERT INTO lab4.city VALUES(DEFAULT,$1,$2,$3,$4)')
@@ -16,6 +20,8 @@
 
 	}
 
+
+	//locgic for the remove action 
 	function remove($pkey, $search_by){
 
 		if($search_by == "city"){
@@ -50,7 +56,7 @@
 		}
 		
 	}
-
+	//logic for all the editing 
 	function edit($pkey, $search_by){
 
 		if($search_by == "country"){
@@ -134,7 +140,7 @@
 	}
 
 
-
+	//displays the insert page for the webapp 
 	function displayinsert(){
 		
 	?>
@@ -164,13 +170,13 @@
 						<small class="error">District is required and must be a string.</small>
 					</div>
 					<div class="population-field">
-						<tr><td>Population</td><td><input type="text" name="population" required pattern="number"></td></tr>
+						<tr><td>Population</td><td><input type="text" name="population" required pattern="[0-9]"></td></tr>
 						<small class="error">Population is required and must be a number.</small>
 					</div>
 					</tbody></table>
 				</div>
 				<div class="row left">
-					<div><input type="submit" class="button"value="Save" onclick="window.location='test.php'"></div>
+					<div><input type="submit" class="button"value="Save"></div>
 					<a class="close-reveal-modal">&#215;</a>
 				</div>
 		</form>

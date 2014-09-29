@@ -1,7 +1,12 @@
 <?php
+
+			//file that has the main logic for the php and the webapp 
+
 			//including the nesesary things for the database connection 
 			require("../secure/database.php");
 			
+
+
 			 //create connection with database
 			
 			$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD) 
@@ -12,6 +17,7 @@
 
 			$search_by;
 
+				//actions for the user to search 
 				if(isset($_POST['search_by'])){
 
 					$search_by = $_POST['search_by'];
@@ -95,11 +101,23 @@
 				pg_close($conn);
 			}
 
+			//action for the user to insert into the database 
 
+			//it error checks for population by not allowing the user to continue
+			//does not display error messgage 
 			if(isset($_POST['action'])){
-				//insert(htmlspecialchars($_POST['name'], $_POST['country_code'],
-				//htmlspecialchars($_POST['district']),htmlspecialchars($_POST['population'])));
-				insert(htmlspecialchars($_POST['name']),$_POST['country_code'],$_POST['district'],$_POST['population']);
+
+				if(!is_numeric($_POST['population'])){
+					echo "<strong>Population must be a numeric value</strong>";
+				}
+				else{
+
+				$population = htmlspecialchars($_POST['population']);
+			    $district = htmlspecialchars($_POST['district']);
+
+
+				insert(htmlspecialchars($_POST['name']),$_POST['country_code'],$district,$population);
+				}
 			}
 
 			if(isset($_POST['type'])){

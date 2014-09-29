@@ -29,7 +29,6 @@
 		</form>
 		<hr>
 		Or insert a new city by clicking this <a href="index.php" data-reveal-id="insert-modal">link</a>
-		<?php //}?>
 
 
 		<?php

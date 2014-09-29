@@ -7,10 +7,11 @@
 		$result = pg_prepare($GLOBALS['conn'], "city_insert", 'INSERT INTO lab4.city VALUES(DEFAULT,$1,$2,$3,$4)')
 		or die("Prepare fail: ".pg_last_error());
 		if(pg_execute($GLOBALS['conn'], "city_insert",array($name,$cCode,$district,$population))){
-			echo "als;jdkffffffffffffffffffffffffffffffffffffffffff";
+			$GLOBALS['toggle'] = 0;
+			echo "<br><strong>insert was successful</strong>";
 		}
 		else{
-			echo "nonnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn";
+			echo "Insert did not work";
 		}
 
 	}
@@ -21,54 +22,113 @@
 			$result = pg_prepare($GLOBALS['conn'], "city_delete", 'DELETE FROM lab4.city AS ci WHERE ci.id ='.$pkey)
 			or die("Prepare fail: ".pg_last_error());
 			if(pg_execute($GLOBALS['conn'], "city_delete",array())){
-				echo "IT worked bro";
+				echo "Delete was successful";
 			}
 			else{
-				echo "it messed up bro";
+				echo "Delete was not successful";
 			}
 		}
 		else if($search_by == "country"){
 			$result = pg_prepare($GLOBALS['conn'], "country_delete", "DELETE FROM lab4.country AS co WHERE co.country_code ILIKE '$pkey'")
 			or die("Prepare fail: ".pg_last_error());
 			if(pg_execute($GLOBALS['conn'], "country_delete",array())){
-				echo "it worked";
+				echo "<br><strong>Delete was successful</strong>";
 			}
 			else{
-				echo "not so working";
+				echo "Delete was not successful";
 			}
 		}
 		else if($search_by == "language"){
 			$result = pg_prepare($GLOBALS['conn'], "langauge_delete", "DELETE FROM lab4.country_language AS lang WHERE lang.country_code ILIKE '$pkey'")
 			or die("Prepare fail: ".pg_last_error());
 			if(pg_execute($GLOBALS['conn'], "langauge_delete",array()) or die(pg_last_error())){
-				echo "it worked";
+				echo "<br><strong>Delete was successful</strong>";
 			}
 			else{
-				echo "not so working";
+				echo "Delete was not successful";
 			}	
 		}
 		
 	}
 
-	function edit(){
+	function edit($pkey, $search_by){
 
-		$fields = array("country_code",
-						"name",
-						"continent",
-						"region",
-					    "surface_area",
-					    "indep_year",	
-						"population",	
-						"life_expectancy",	
-						"gnp",	
-						"gnp_old",	
-						"local_name",	
-						"government_form",	
-						"head_of_state",	
-						"capital",	
-						"code2")
+		if($search_by == "country"){
+			$fields = array("country_code",
+							"name",
+							"continent",
+							"region",
+						    "surface_area",
+						    "indep_year",	
+							"population",	
+							"life_expectancy",	
+							"gnp",	
+							"gnp_old",	
+							"local_name",	
+							"government_form",	
+							"head_of_state",	
+							"capital",	
+							"code2");
 
+			$result = pg_prepare($GLOBALS['conn'], "country_edit", "SELECT * FROM lab4.country AS co WHERE co.country_code ILIKE $1")
+				or die("Prepare fail: country edit selet ".pg_last_error());
+			$result = pg_execute($GLOBALS['conn'], "country_edit",array($pkey)) or die("error in execut coutry_edit selt".pg_last_error());
+		}
+		else if($search_by == "city"){
+			$fields = array("id",	
+							"name",	
+							"country_code",	
+							"district",	
+							"population",);
+
+			$result = pg_prepare($GLOBALS['conn'], "city_edit", "SELECT * FROM lab4.city AS ci WHERE ci.id = $1")
+				or die("Prepare fail: city ".pg_last_error());
+			$result = pg_execute($GLOBALS['conn'], "city_edit",array(intval($pkey))) or die("Error in Exection of city_edit selet".pg_last_error());
+		}
+
+		else if($search_by == "language"){
+			$fields = array("country_code",
+							"language",
+							"is_official",	
+							"percentage");
+
+			$result = pg_prepare($GLOBALS['conn'], "language_edit", "SELECT * FROM lab4.country_language AS la WHERE la.country_code ILIKE $1")
+				or die("Prepare fail: language ".pg_last_error());
+			$result = pg_execute($GLOBALS['conn'], "language_edit",array($pkey)) or die("Error in Exection of language_edit selet".pg_last_error());
+
+						
+		}
 		
+
+		$line = pg_fetch_array($result, null, PGSQL_ASSOC);
+			?>
+			<form method="POST" action="index.php">'
+			<?php
+			echo '<input type="hidden" name="edit_submit" value="'.$pkey.'"/>';
+			echo '<input type="hidden" name="search" value="'.$search_by.'"/>';
+			echo "<table border=\"1\">\n";
+			for($i=0;$i<count($fields);$i++){
+				
+				if($fields[$i] == "indep_year" || $fields[$i] == "population" || $fields[$i] == "local_name"
+				 || $fields[$i] == "government_form" || $fields[$i] == "district" || $fields[$i] == "is_official" || $fields[$i] == "percentage"){
+					echo "<tr>";
+					echo "<td width=\"135\"><strong>$fields[$i]</strong></td>";
+					echo "<td width=\"135\"><input type=\"text\" name=\"".$fields[$i]."\" value=\"".$line[$fields[$i]]."\"></td>";
+					echo "</tr>";
+				}
+				else{
+					echo "<tr>";
+					echo "<td width=\"135\">$fields[$i]</td>";
+					echo "<td width=\"135\">".$line[$fields[$i]]."</td>";
+					echo "</tr>";
+				}
+
+			}
+
+			echo "</table>";
+		    echo '<input type="submit" value="Save">';
+			echo '<input type="button" value="Cancel" onclick="window.location=\'index.php\'">';
+			echo "</form>";
 
 
 	}
@@ -110,65 +170,10 @@
 					</tbody></table>
 				</div>
 				<div class="row left">
-					<div><input type="submit" class="button"value="Save"></div>
+					<div><input type="submit" class="button"value="Save" onclick="window.location='test.php'"></div>
 					<a class="close-reveal-modal">&#215;</a>
 				</div>
 		</form>
-	
-	<?php
-	}
-
-
-	function displayedit(){
-		?>
-		<form method="POST" action="">
-			<input type="hidden" name="pk" value="GHA:Akan"><input type="hidden" name="tbl" value="language"><input type="hidden" name="action" value="save_edit"><table border="1">
-				<tbody><tr>
-					<td>country_code</td>
-					<td>GHA</td>
-				</tr>
-				<tr>
-					<td>language</td>
-					<td>Akan</td>
-				</tr>
-				<tr>
-					<td><strong>is_official</strong></td>
-					<td><input type="text" name="is_official" value="f"></td>
-				</tr>
-				<tr>
-					<td><strong>percentage</strong></td>
-					<td><input type="text" name="percentage" value="52.4"></td>
-				</tr>
-			</tbody></table>
-			<input type="submit" value="Save">
-			<input type="button" value="Cancel" onclick="top.location.href='lab4.php';">
-		</form>
-		<?php
-	}
-
-	function displayDelete(){
-		echo "<b>Delete was successful</b>";
-	}
-
-	function validation(){
-
-		?>
-
-		<form data-abide>
-  <div class="name-field">
-    <label>Your name <small>required</small>
-      <input type="text" required pattern="[a-zA-Z]+">
-    </label>
-    <small class="error">Name is required and must be a string.</small>
-  </div>
-  <div class="email-fie">
-    <label>Email <small>required</small>
-      <input type="email" required>
-    </label>
-    <small class="error">An email address is required.</small>
-  </div>
-  <button type="submit">Submit</button>
-</form>
 	
 	<?php
 	}

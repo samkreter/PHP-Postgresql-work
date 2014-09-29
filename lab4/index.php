@@ -1,5 +1,4 @@
 <html>
-	<?php //require("viewfuncs.php"); ?>
 	<head>
 		<meta charset="UTF-8">
 		<title>CS 3380 Lab 4</title>
@@ -8,7 +7,9 @@
     	<script src="foundation-5.4.0/js/vendor/modernizr.js"></script>
 	</head>
 	<body>
+	<?php 
 
+	?>
 		<form method="POST" action="<?=$_SERVER['PHP_SELF']?>">
 		    Search for a :
 		    <input type="radio" name="search_by" checked="true" value="country">Country 
@@ -27,8 +28,8 @@
 		    </div>
 		</form>
 		<hr>
-		Or insert a new city by clicking this <a href="#" data-reveal-id="insert-modal">link</a>
-
+		Or insert a new city by clicking this <a href="index.php" data-reveal-id="insert-modal">link</a>
+		<?php //}?>
 
 
 		<?php

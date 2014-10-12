@@ -145,40 +145,44 @@
 		
 	?>
 		<form method="POST" action="index.php" data-abide>
-				<div class="row">
 					<input type="hidden" name="action" value="save_insert">
 					Enter data for the city to be added: <br>
-					<table border="1">
 					<div class="name-field">
-						<tbody><tr><td>Name</td><td><input type="text" name="name" required></td></tr>
+						<label>Name
+							<input type="text" name="name" required>
+						</label>
 						<small class="error">Name is required and must be a string.</small>
 					</div>
-					<tr><td>Country Code</td><td><select name="country_code">
-						<?php 
-							$result = pg_prepare($GLOBALS['conn'], "poplist", 'SELECT co.country_code, co.name FROM 
-			                lab4.country AS co') or die("Prepare fail: ".pg_last_error());
-			                $result = pg_execute($GLOBALS['conn'], "poplist",array()) or die("Query fail: ".pg_last_error());
-							
-			                while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+					<div class="country-field">
+						<label>Country Code
+							<select name="country_code">
+								<?php 
+									$result = pg_prepare($GLOBALS['conn'], "poplist", 'SELECT co.country_code, co.name FROM 
+					                lab4.country AS co') or die("Prepare fail: ".pg_last_error());
+					                $result = pg_execute($GLOBALS['conn'], "poplist",array()) or die("Query fail: ".pg_last_error());
+									
+					                while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 
-								echo "<option value=\"".$line['country_code']."\">".$line["name"]."</option>\n";
-							}
-						?>
-					</select></td></tr>
+										echo "<option value=\"".$line['country_code']."\">".$line["name"]."</option>\n";
+									}
+								?>
+							</select>
+						</label>
+					</div>
 					<div class"district-field">
-						<tr><td>District</td><td><input type="text" name="district" required></td></tr>
+						<label>District
+							<input type="text" name="district" required></td></tr>
+						</label>
 						<small class="error">District is required and must be a string.</small>
 					</div>
 					<div class="population-field">
-						<tr><td>Population</td><td><input type="text" name="population" required pattern="[0-9]"></td></tr>
+						<label>Population
+							<input type="text" name="population" required pattern="[0-9]"></td></tr>
+						</label>
 						<small class="error">Population is required and must be a number.</small>
 					</div>
-					</tbody></table>
-				</div>
-				<div class="row left">
 					<div><input type="submit" class="button"value="Save"></div>
 					<a class="close-reveal-modal">&#215;</a>
-				</div>
 		</form>
 	
 	<?php

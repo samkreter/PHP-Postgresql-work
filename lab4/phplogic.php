@@ -78,7 +78,7 @@
 				 <form method="POST" action="<?=$_SERVER['PHP_SELF']?>">
 				 <?php
 				 echo '<input type="submit" id="edit-button" name="type" value="Edit"/>';
-			     echo '<input type="submit" name="type" value="Remove" onclick="window.location=\'deletep.php\'/>';
+			     echo '<input type="submit" name="type" value="Remove"/>';
 				 echo '<input type="hidden" name="pkey" value="'.$line[$pkey].'"/>';
 				 echo '<input type="hidden" name="table" value="'.$search_by.'"/>';
 				 echo '</form>';

@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>CS 3380 Lab 2</title>
+		<title>CS 3380 Lab 6</title>
 	</head>
 	<body>
 		<form method="POST" action="<?= $_SERVER['PHP_SELF'] ?>">
@@ -16,8 +16,6 @@
 				<option value="8">Query 8</option>
 				<option value="9">Query 9</option>
 				<option value="10">Query 10</option>
-				<option value="11">Query 11</option>
-				<option value="12">Query 12</option>
 			</select>
 			<input type="submit" name="submit" value="Execute">
 		</form>
@@ -35,7 +33,7 @@
 		<?php
 			
 			//including the nesesary things for the database connection 
-<<<<<<< HEAD
+
 			include("../../secure/database.php");
 			
 			 //create connection with database
@@ -50,7 +48,6 @@
 				 //switch statment for selecting the query for the user
 				switch($num){
 					case 1:
-<<<<<<< HEAD
 						$query = "SELECT MIN(surface_area),MAX(surface_area),AVG(surface_area) 
 								 FROM lab6.country";
 						break;
@@ -81,43 +78,65 @@
 								ORDER BY urban_pct ASC';
 						break;
 					case 6:
-						$query ='SELECT co.name AS country, ci.name AS largest_city, MAX(ci.population) OVER (PARTITION BY co.name) FROM lab6.city AS ci 
-								INNER JOIN lab6.country AS co ON ci.country_code = co.country_code 
-							     ORDER BY ci.population DESC';
+						$query ='SELECT cp.country_name, lab6.city.name, cp.max_population FROM 
+				(SELECT lab6.country.country_code AS country_code, lab6.country.name AS country_name, max(lab6.city.population) As max_population FROM lab6.country, lab6.city 
+				WHERE lab6.country.country_code = lab6.city.country_code 
+				GROUP BY lab6.country.country_code, lab6.country.name) 
+				As cp JOIN lab6.city ON cp.country_code = lab6.city.country_code 
+				WHERE lab6.city.population = cp.max_population ORDER BY max_population DESC';
+						break;
 
 					case 7:
-						$query ='SELECT c.name, country.name AS country, c.population 
-								FROM lab2.city AS c INNER JOIN lab2.country 
-								ON (country.country_code=c.country_code)
-								WHERE (c.population > 6000000)
-								ORDER BY c.population DESC';
+						$query ='SELECT co.name, COUNT(*) FROM lab6.city AS ci 
+								INNER JOIN lab6.country AS co ON ci.country_code = co.country_code 
+								GROUP BY co.name
+								ORDER BY COUNT DESC';
 						break;
+					//not a fun query to do, this one was hard :(
 					case 8:
-						$query ='SELECT co.name, cl.language, cl.percentage FROM lab2.country_language AS cl, lab2.country AS co
-								WHERE (c.country_code=co.country_code) AND (co.population > 50000000) AND (cl.is_official = false)
-								ORDER BY cl.percentage DESC';
+						$query ='SELECT country.name, capitals.name AS capital, cont_lang.lang_num 
+				                FROM
+			                    ( SELECT ci.name AS name, ci.country_code AS country_code
+			                      FROM lab6.city as ci, lab6.country AS co
+			                      WHERE ci.id = co.capital
+			                    ) AS capitals
+			                    JOIN
+			                    (
+			                      SELECT COUNT(*) AS lang_num, country.country_code AS country_code
+			                      FROM lab6.country_language JOIN lab6.country USING 
+			                      (country_code)
+			                      GROUP BY country.country_code
+			                      HAVING COUNT(*)>=8 AND COUNT(*) <= 12
+			                    ) AS cont_lang
+			                    USING(country_code)
+			                    JOIN
+			                    lab6.country
+			                    USING(country_code)
+			                    ORDER BY lang_num DESC, capitals.name DESC';
 						break;
 					case 9:
-						$query ="SELECT co.name, co.indep_year, co.region FROM lab2.country AS co , lab2.country_language AS cl 
-								WHERE (co.country_code=cl.country_code) AND (cl.language LIKE 'English') AND (cl.is_official = true)
-								ORDER BY co.region ASC, co.name ASC";
+						$query ='SELECT country.name, tmp.city, tmp.population, tmp.running_total FROM (
+				                  SELECT city.name as city, city.country_code, city.population,
+				                  SUM(population) OVER (PARTITION BY city.country_code ORDER BY city.population DESC
+				                    ) AS running_total
+				                  FROM lab6.city
+				                  ) AS tmp
+				                JOIN
+				                lab6.country USING (country_code)
+				                ORDER BY country.name, tmp.running_total';
 						break;
 					case 10:
-						$query ='SELECT ci.name AS capital_name, co.name AS country_name, FLOOR(cast(cast(ci.population AS float)/cast(co.population AS float)*100 AS numeric)) AS Urban_pct
-						FROM lab2.city AS ci,lab2.country AS co where co.capital=ci.id
-						ORDER BY Urban_pct DESC'; 
+						$query ='SELECT country.name, tmp.language, tmp.rank_in_region FROM (
+				                SELECT country_code, language, 
+				                rank() OVER (
+				                  PARTITION BY country_code 
+				                  ORDER BY percentage DESC
+				                  ) AS rank_in_region 
+				                  FROM lab6.country_language
+				                  ) AS tmp
+				                  JOIN lab6.country USING (country_code)
+				                  ORDER BY country.name, tmp.rank_in_region'; 
 						break;	
-					case 11:
-						$query ='SELECT co.name, cl.language,((percentage*co.population)/100) AS speakers 
-				                FROM lab2.country AS co, lab2.country_language AS cl
-				                WHERE (cl.is_official=true) AND (cl.country_code=co.country_code)
-				                ORDER BY speakers DESC ';
-						break;
-					case 12:
-						$query ='SELECT name, region, gnp, gnp_old, ((gnp-gnp_old)/gnp_old) AS real_change FROM lab2.country
-								 WHERE (gnp IS NOT NULL) AND (gnp_old IS NOT NULL)
-								 ORDER BY  real_change DESC';
-						break;
 				}
 
 

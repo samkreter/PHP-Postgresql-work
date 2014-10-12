@@ -35,6 +35,7 @@
 		<?php
 			
 			//including the nesesary things for the database connection 
+<<<<<<< HEAD
 			include("../../secure/database.php");
 			
 			 //create connection with database
@@ -49,6 +50,7 @@
 				 //switch statment for selecting the query for the user
 				switch($num){
 					case 1:
+<<<<<<< HEAD
 						$query = "SELECT MIN(surface_area),MAX(surface_area),AVG(surface_area) 
 								 FROM lab6.country";
 						break;
@@ -82,7 +84,7 @@
 						$query ='SELECT co.name AS country, ci.name AS largest_city, MAX(ci.population) OVER (PARTITION BY co.name) FROM lab6.city AS ci 
 								INNER JOIN lab6.country AS co ON ci.country_code = co.country_code 
 							     ORDER BY ci.population DESC';
-						break;
+
 					case 7:
 						$query ='SELECT c.name, country.name AS country, c.population 
 								FROM lab2.city AS c INNER JOIN lab2.country 
@@ -92,7 +94,7 @@
 						break;
 					case 8:
 						$query ='SELECT co.name, cl.language, cl.percentage FROM lab2.country_language AS cl, lab2.country AS co
-								WHERE (cl.country_code=co.country_code) AND (co.population > 50000000) AND (cl.is_official = false)
+								WHERE (c.country_code=co.country_code) AND (co.population > 50000000) AND (cl.is_official = false)
 								ORDER BY cl.percentage DESC';
 						break;
 					case 9:

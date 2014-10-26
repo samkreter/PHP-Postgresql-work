@@ -1,3 +1,4 @@
+set search_path = lab7;
 /*
   1)The reason this query used an index was because postgres will automaticly create an index
   on the primary key for more efficent querying of that key.

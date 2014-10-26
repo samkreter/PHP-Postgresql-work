@@ -39,6 +39,7 @@ CREATE INDEX
 --########################################################################################
 \echo #3
 DROP INDEX IF EXISTS banks_name_idx;
+SELECT * FROM lab7.banks ORDER BY name;
 EXPLAIN ANALYZE SELECT name FROM lab7.banks ORDER BY name;
 /*                                                 QUERY PLAN
 ----------------------------------------------------------------------------------------------------------------
@@ -71,6 +72,7 @@ CREATE INDEX ON banks(is_active);
 --#############################################################################################
 
 \echo #5
+SELECT * FROM banks WHERE is_active = TRUE;
 EXPLAIN ANALYZE SELECT * FROM banks WHERE is_active = TRUE;
 /*                                                         QUERY PLAN
 -------------------------------------------------------------------------------------------------------------------------------------
@@ -81,6 +83,7 @@ EXPLAIN ANALYZE SELECT * FROM banks WHERE is_active = TRUE;
  Total runtime: 2.256 ms
 
 */
+SELECT * FROM banks WHERE is_active = FALSE;
 EXPLAIN ANALYZE SELECT * FROM banks WHERE is_active = FALSE;
 
 /*
@@ -103,6 +106,7 @@ EXPLAIN ANALYZE SELECT * FROM banks WHERE is_active = FALSE;
 --############################################################################################
 \echo #6
 DROP INDEX IF EXISTS banks_insured_idx;
+SELECT * FROM banks WHERE insured >= '2000-01-01';
 EXPLAIN ANALYZE SELECT * FROM banks WHERE insured >= '2000-01-01'::date;
 /*
                                                QUERY PLAN
@@ -153,5 +157,5 @@ FROM banks WHERE deposits != 0 AND (assets/deposits) < 0.5;
  Total runtime: 0.253 ms
 */
 /*
-The index was faster by 31.823ms and is 1278.3% faster 
+The index was faster by 31.823ms and is 1278.3% faster
 */

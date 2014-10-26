@@ -72,7 +72,7 @@
 								ORDER BY COUNT ASC';
 						break;
 					case 5:
-						$query ='SELECT co.name, co.population, SUM(ci.population) AS urban_population, (SUM(ci.population)::numeric/co.population::numeric) AS urban_pct FROM lab6.city AS ci 
+						$query ='SELECT co.name, co.population, SUM(ci.population) AS urban_population, (SUM(ci.population)::numeric/co.population::numeric)*100 AS urban_pct FROM lab6.city AS ci 
 								INNER JOIN lab6.country AS co ON ci.country_code = co.country_code 
 								GROUP BY co.country_code
 								ORDER BY urban_pct ASC';

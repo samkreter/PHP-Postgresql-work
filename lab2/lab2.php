@@ -26,30 +26,35 @@
 		<hr>
 		<br>
 		<?php
-		//clearing if there was a post made 
+		//clearing if there was a post made
 		if(empty($_POST)){ ?>
 		<strong>Select a query from the above list</strong>
 		<?php
-		}?>	
+		}?>
 
 		<?php
-			
-			//including the nesesary things for the database connection 
+
 			include("../secure/database.php");
-			
+			//including the nesesary things for the database connection
+			echo HOST;
 			 //create connection with database
-			$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD) 
+		//	$conn = pg_connect("host=localhost dbname=kreter user=kreter password=layellow25")
+			$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
 			 or die('Could not connect: ' . pg_last_error());
-			
-			//checking if the post varible is empty 
+
+			if(!$conn){
+				echo "<b>messed up</b>";
+			}
+
+			//checking if the post varible is empty
 			 if(!empty($_POST)){
 
-				 $num = $_POST['query']; 
+				 $num = $_POST['query'];
 
 				 //switch statment for selecting the query for the user
 				switch($num){
 					case 1:
-						$query = "SELECT district, population FROM lab2.city 
+						$query = "SELECT district, population FROM lab2.city
 						WHERE name LIKE 'Springfield'
 						ORDER BY population DESC";
 						break;
@@ -59,7 +64,7 @@
 								ORDER BY name ASC";
 						break;
 					case 3:
-						$query ='SELECT name, continent, surface_area FROM lab2.country 
+						$query ='SELECT name, continent, surface_area FROM lab2.country
 								ORDER BY surface_area ASC
 								LIMIT 20';
 						break;
@@ -79,8 +84,8 @@
 								ORDER BY ci.population DESC";
 						break;
 					case 7:
-						$query ='SELECT c.name, country.name AS country, c.population 
-								FROM lab2.city AS c INNER JOIN lab2.country 
+						$query ='SELECT c.name, country.name AS country, c.population
+								FROM lab2.city AS c INNER JOIN lab2.country
 								ON (country.country_code=c.country_code)
 								WHERE (c.population > 6000000)
 								ORDER BY c.population DESC';
@@ -91,17 +96,17 @@
 								ORDER BY cl.percentage DESC';
 						break;
 					case 9:
-						$query ="SELECT co.name, co.indep_year, co.region FROM lab2.country AS co , lab2.country_language AS cl 
+						$query ="SELECT co.name, co.indep_year, co.region FROM lab2.country AS co , lab2.country_language AS cl
 								WHERE (co.country_code=cl.country_code) AND (cl.language LIKE 'English') AND (cl.is_official = true)
 								ORDER BY co.region ASC, co.name ASC";
 						break;
 					case 10:
 						$query ='SELECT ci.name AS capital_name, co.name AS country_name, FLOOR(cast(cast(ci.population AS float)/cast(co.population AS float)*100 AS numeric)) AS Urban_pct
 						FROM lab2.city AS ci,lab2.country AS co where co.capital=ci.id
-						ORDER BY Urban_pct DESC'; 
-						break;	
+						ORDER BY Urban_pct DESC';
+						break;
 					case 11:
-						$query ='SELECT co.name, cl.language,((percentage*co.population)/100) AS speakers 
+						$query ='SELECT co.name, cl.language,((percentage*co.population)/100) AS speakers
 				                FROM lab2.country AS co, lab2.country_language AS cl
 				                WHERE (cl.is_official=true) AND (cl.country_code=co.country_code)
 				                ORDER BY speakers DESC ';
@@ -116,20 +121,21 @@
 
 				//getting the query results
 				$result = pg_query($query) or die('Query failed: ' . pg_last_error());
+
 				 //Printing results in HTML
 				echo "There where <em>" . pg_num_rows($result) . "</em> rows returned<br><br>\n";
 				echo "<table border='1'>\n";
-				
+
 				echo "<tr>";
-				//checking the number of fields return to populate header 
+				//checking the number of fields return to populate header
 				$numFields = pg_num_fields($result);
-				//populating the header 
+				//populating the header
 				for($i = 0;$i < $numFields; $i++){
 				  $fieldName = pg_field_name($result, $i);
 				  echo "\t\t<th>" . $fieldName . "</th>\n";
 				}
 				echo "</tr>";
-				//populating table with the results 
+				//populating table with the results
 				while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 				 echo "\t<tr>\n";
 				 foreach ($line as $col_value) {

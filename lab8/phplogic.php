@@ -65,7 +65,6 @@
 				$username = htmlspecialchars($_POST['username']);
 				$password = htmlspecialchars($_POST['password']);
 
-
 				$resultForPassLookUp = pg_prepare($conn, "passLookUp",
 				'SELECT password_hash, salt FROM lab8.authentication
 				 WHERE username LIKE $1')
@@ -73,13 +72,20 @@
 
 				$resultForPassLookUp = pg_execute($conn,"passLookUp",
 				array($username)) or die("passLookUp Execute Fail: ".pg_last_error());
+				if(pg_num_rows($resultForPassLookUp) == 0){
+					header("location: error.php");
+				}
+				else{
 					$line = pg_fetch_array($resultForPassLookUp, null, PGSQL_ASSOC);
 					$tempPass = $line['password_hash'];
 					if($tempPass == sha1($password.$line['salt'])){
 						$_SESSION['user'] = $username;
 						header("location: home.php");
 					}
-
+					else{
+						header("location: error.php")
+					}
+				}
 				//closing connecting with databse
 				pg_close($conn);
 			}

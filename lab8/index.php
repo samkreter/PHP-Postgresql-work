@@ -97,8 +97,9 @@
                       <input type="password" class="form-control" name="FirstPassword" placeholder="Password">
                     </div>
                     <div class="form-group">
-                      <label for="InputPasswordTester">Re-Enter Password</label>
-                      <input type="password" class="form-control" name="reEnterPass" placeholder="Password">
+                      <label for="InputDescription">Enter Description</label>
+                      <!-- <input type="text" class="form-control" name="description"></input> -->
+                      <textarea class="form-control" name="description" row="3"></textarea>
                     </div>
                     <button type="submit" class="btn btn-default">Submit</button>
                 </form>

@@ -1,11 +1,29 @@
-	
+
 <?php
 
-	//all helper functions for all of the necessary actions 
+	//all helper functions for all of the necessary actions
+	// Function to get the client IP address
+	function getClientIP() {
+	    $ipaddress = '';
+	    if (getenv('HTTP_CLIENT_IP'))
+	        $ipaddress = getenv('HTTP_CLIENT_IP');
+	    else if(getenv('HTTP_X_FORWARDED_FOR'))
+	        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+	    else if(getenv('HTTP_X_FORWARDED'))
+	        $ipaddress = getenv('HTTP_X_FORWARDED');
+	    else if(getenv('HTTP_FORWARDED_FOR'))
+	        $ipaddress = getenv('HTTP_FORWARDED_FOR');
+	    else if(getenv('HTTP_FORWARDED'))
+	       $ipaddress = getenv('HTTP_FORWARDED');
+	    else if(getenv('REMOTE_ADDR'))
+	        $ipaddress = getenv('REMOTE_ADDR');
+	    else
+	        $ipaddress = 'UNKNOWN';
+	    return $ipaddress;
+	}
 
-
-
-	//logic for the insert page 
+	/*
+	//logic for the insert page
 	function insert($name,$cCode,$district,$population){
 
 		$result = pg_prepare($GLOBALS['conn'], "city_insert", 'INSERT INTO lab4.city VALUES(DEFAULT,$1,$2,$3,$4)')
@@ -21,7 +39,7 @@
 	}
 
 
-	//locgic for the remove action 
+	//locgic for the remove action
 	function remove($pkey, $search_by){
 
 		if($search_by == "city"){
@@ -52,11 +70,11 @@
 			}
 			else{
 				echo "Delete was not successful";
-			}	
+			}
 		}
-		
+
 	}
-	//logic for all the editing 
+	//logic for all the editing
 	function edit($pkey, $search_by){
 
 		if($search_by == "country"){
@@ -65,15 +83,15 @@
 							"continent",
 							"region",
 						    "surface_area",
-						    "indep_year",	
-							"population",	
-							"life_expectancy",	
-							"gnp",	
-							"gnp_old",	
-							"local_name",	
-							"government_form",	
-							"head_of_state",	
-							"capital",	
+						    "indep_year",
+							"population",
+							"life_expectancy",
+							"gnp",
+							"gnp_old",
+							"local_name",
+							"government_form",
+							"head_of_state",
+							"capital",
 							"code2");
 
 			$result = pg_prepare($GLOBALS['conn'], "country_edit", "SELECT * FROM lab4.country AS co WHERE co.country_code ILIKE $1")
@@ -81,10 +99,10 @@
 			$result = pg_execute($GLOBALS['conn'], "country_edit",array($pkey)) or die("error in execut coutry_edit selt".pg_last_error());
 		}
 		else if($search_by == "city"){
-			$fields = array("id",	
-							"name",	
-							"country_code",	
-							"district",	
+			$fields = array("id",
+							"name",
+							"country_code",
+							"district",
 							"population",);
 
 			$result = pg_prepare($GLOBALS['conn'], "city_edit", "SELECT * FROM lab4.city AS ci WHERE ci.id = $1")
@@ -95,16 +113,16 @@
 		else if($search_by == "language"){
 			$fields = array("country_code",
 							"language",
-							"is_official",	
+							"is_official",
 							"percentage");
 
 			$result = pg_prepare($GLOBALS['conn'], "language_edit", "SELECT * FROM lab4.country_language AS la WHERE la.country_code ILIKE $1")
 				or die("Prepare fail: language ".pg_last_error());
 			$result = pg_execute($GLOBALS['conn'], "language_edit",array($pkey)) or die("Error in Exection of language_edit selet".pg_last_error());
 
-						
+
 		}
-		
+
 
 		$line = pg_fetch_array($result, null, PGSQL_ASSOC);
 			?>
@@ -114,7 +132,7 @@
 			echo '<input type="hidden" name="search" value="'.$search_by.'"/>';
 			echo "<table border=\"1\">\n";
 			for($i=0;$i<count($fields);$i++){
-				
+
 				if($fields[$i] == "indep_year" || $fields[$i] == "population" || $fields[$i] == "local_name"
 				 || $fields[$i] == "government_form" || $fields[$i] == "district" || $fields[$i] == "is_official" || $fields[$i] == "percentage"){
 					echo "<tr>";
@@ -140,9 +158,9 @@
 	}
 
 
-	//displays the insert page for the webapp 
+	//displays the insert page for the webapp
 	function displayinsert(){
-		
+
 	?>
 		<form method="POST" action="index.php" data-abide>
 					<input type="hidden" name="action" value="save_insert">
@@ -156,11 +174,11 @@
 					<div class="country-field">
 						<label>Country Code
 							<select name="country_code">
-								<?php 
-									$result = pg_prepare($GLOBALS['conn'], "poplist", 'SELECT co.country_code, co.name FROM 
+								<?php
+									$result = pg_prepare($GLOBALS['conn'], "poplist", 'SELECT co.country_code, co.name FROM
 					                lab4.country AS co') or die("Prepare fail: ".pg_last_error());
 					                $result = pg_execute($GLOBALS['conn'], "poplist",array()) or die("Query fail: ".pg_last_error());
-									
+
 					                while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 
 										echo "<option value=\"".$line['country_code']."\">".$line["name"]."</option>\n";
@@ -184,8 +202,8 @@
 					<div><input type="submit" class="button"value="Save"></div>
 					<a class="close-reveal-modal">&#215;</a>
 		</form>
-	
+
 	<?php
 	}
-
+	*/
 ?>

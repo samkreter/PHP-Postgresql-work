@@ -4,22 +4,48 @@
 
 			//including the nesesary things for the database connection
 			require("../secure/database.php");
+			//include the helper functions
+			require("helperFunctions.php");
 
 			//starting the session
 			session_start();
 
-			 //create connection with database
-
-			/*$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
-			 or die('Could not connect: ' . pg_last_error());*/
-
-
 
 			if(isset($_POST['FirstUsername'])){
-				
+				//create connection with database
+				$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
+					or die('Could not connect: ' . pg_last_error());
 
+				//set up varibles
+				$username = htmlspecialchars($_POST['FirstUsername']);
+				$salt = rand();
+				$password = sha1(htmlspecialchars($_POST['FirstPassword']).$salt);
+				$description = htmlspecialchars($_POST['description']);
+				$ipAdress = getClientIP();
+
+				//prepare statments
+				$resultForUser_info = pg_prepare($conn, "user_infoInsert",
+				'INSERT INTO lab8.user_info VALUES($1,DEFAULT,$2)')
+				or die("User_infoInsert Prepare fail: ".pg_last_error());
+
+				$resultForAuthentication = pg_prepare($conn,"authenticationInsert",
+				'INSERT INTO lab8.authentication VALUES($1,$2,$3)')
+				or die("AuthenticationInsert Prepare fail: ".pg_last_error());
+
+				$reslutForLog = pg_prepare($conn,"logInsert",
+				'INSERT INTO lab8.log VALUES(DEFAULT,$1,$2,DEFAULT,$3)')
+				or die("logInsert Prespare Fail: ".pg_last_error());
+
+				//execute statments
+				$resultForUser_info = pg_execute($conn, "user_infoInsert",
+				array($username,$description)) or die("User_infoInsert Execute Fail: ".pg_last_error());
+
+				$resultForAuthentication = pg_execute($conn, "authenticationInsert",
+				array($username,$password,$salt)) or die("AuthenticationInsert Execute Fail: ".pg_last_error());
+
+				$resultForLog = pg_execute($conn, "logInsert",
+				array($username,$ip_adress,$action)) or die("LogInsert Execute Fail: ".pg_last_error());
 			}
-
 				/*
 			 require("viewfuncs.php");
 
@@ -185,9 +211,5 @@
 			}
 
 		*/
-
-
-
-
 
 ?>

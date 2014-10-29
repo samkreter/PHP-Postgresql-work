@@ -1,4 +1,3 @@
-
 <?php
 
 	//all helper functions for all of the necessary actions

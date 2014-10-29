@@ -10,7 +10,6 @@
 			//starting the session
 			session_start();
 
-
 			if(isset($_POST['FirstUsername'])){
 				//create connection with database
 				$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
@@ -46,35 +45,13 @@
 
 				$resultForLog = pg_execute($conn, "logInsert",
 				array($username,$ipAddress,$action)) or die("LogInsert Execute Fail: ".pg_last_error());
+
+				$_SESSION['user'] = $username;
+
+				header("location: home.php");
+				pg_close($conn);
 			}
 				/*
-			 require("viewfuncs.php");
-
-			$search_by;
-
-				//actions for the user to search
-				if(isset($_POST['search_by'])){
-
-					$search_by = $_POST['search_by'];
-					$userInput = htmlspecialchars($_POST['query_string']);
-					$userInput = $userInput."%";
-
-				 	if($_POST['search_by'] == "country"){
-						$result = pg_prepare($conn, "country_lookup", 'SELECT * FROM
-		                lab4.country AS co WHERE co.name  ILIKE $1') or die("Prepare fail: ".pg_last_error());
-		                $result = pg_execute($conn, "country_lookup",array($userInput)) or die("Query fail: ".pg_last_error());
-					}
-					else if($_POST['search_by'] == "city"){
-						$result = pg_prepare($conn, "city_lookup", 'SELECT * FROM
-		                lab4.city AS ci WHERE ci.name ILIKE $1') or die("Prepare fail: ".pg_last_error());
-		                $result = pg_execute($conn, "city_lookup",array($userInput)) or die("Query fail: ".pg_last_error());
-					}
-					else if($_POST['search_by'] == "language"){
-						$result = pg_prepare($conn, "language_lookup", 'SELECT * FROM
-		                lab4.country_language AS la WHERE la.language ILIKE $1') or die("Prepare fail: ".pg_last_error());
-		                $result = pg_execute($conn, "language_lookup",array($userInput)) or die("Query fail: ".pg_last_error());
-					}
-
 
 
 				 //Printing results in HTML

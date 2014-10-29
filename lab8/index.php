@@ -41,7 +41,7 @@
                     <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand page-scroll" href="#page-top">
-                    <i class="fa fa-play-circle"></i>  <span class="light">Start</span> Bootstrap
+                    <i class="fa fa-play-circle"></i>  <span class="light">Sam</span> Kreter
                 </a>
             </div>
 
@@ -56,7 +56,7 @@
                         <a class="page-scroll" href="#Register">Register</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#Log In">Log In</a>
+                        <a class="page-scroll" href="#LogIn">Log In</a>
                     </li>
                 </ul>
             </div>
@@ -82,7 +82,7 @@
         </div>
     </header>
 
-    <!-- About Section -->
+    <!-- Register Section -->
     <section id="Register" class="container content-section text-center">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
@@ -106,8 +106,8 @@
         </div>
     </section>
 
-    <!-- Download Section -->
-    <section id="Log In" class="content-section text-center">
+    <!-- Log In Section -->
+    <section id="LogIn" class="content-section text-center">
         <div class="download-section">
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
@@ -132,7 +132,7 @@
     <!-- Footer -->
     <footer>
         <div class="container text-center">
-            <p>Copyright &copy; Your Website 2014</p>
+            <p>Copyright &copy; BlackSmith 2014</p>
         </div>
     </footer>
 

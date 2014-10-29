@@ -21,6 +21,8 @@
 	    return $ipaddress;
 	}
 
+	
+
 	/*
 	//logic for the insert page
 	function insert($name,$cCode,$district,$population){

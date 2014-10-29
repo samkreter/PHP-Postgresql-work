@@ -1,3 +1,4 @@
+<?php require("phplogic.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -32,7 +33,6 @@
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-    <?php require("phplogic.php"); ?>
     <!-- Navigation -->
     <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
         <div class="container">
@@ -113,7 +113,7 @@
             <div class="container">
                 <div class="col-lg-8 col-lg-offset-2">
                     <h2>Log In</h2>
-                      <form role="form">
+                      <form role="form" method="POST" action="<?=$_SERVER['PHP_SELF']?>">
                           <div class="form-group">
                             <label for="InputUsername">UserName</label>
                             <input type="username" class="form-control" name="username" placeholder="Enter Username">
@@ -124,6 +124,11 @@
                           </div>
                           <button type="submit" class="btn btn-default">Submit</button>
                       </form>
+                      <?php
+                        if($_SESSION['user'] == '-1'){
+                          echo "<b>Wrong Password</b>";
+                        }
+                      ?>
                   </div>
                 </div>
             </div>

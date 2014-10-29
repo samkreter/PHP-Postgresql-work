@@ -1,3 +1,11 @@
+<?php
+
+
+if(!isset($_SESSION['user'])){
+  header("location: index.php");
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -101,14 +109,7 @@
     <!-- Custom Theme JavaScript -->
     <script src="js/grayscale.js"></script>
 
-    <?php
 
-    session_start();
-    if(!isset($_SESSION['user'])){
-      header("location: index.php");
-    }
-
-  ?>
 </body>
 
 </html>

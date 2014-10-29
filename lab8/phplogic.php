@@ -10,6 +10,9 @@
 			//starting the session
 			session_start();
 
+
+
+			//restestration handling
 			if(isset($_POST['FirstUsername'])){
 				//create connection with database
 				$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
@@ -17,11 +20,11 @@
 
 				//set up varibles
 				$username = htmlspecialchars($_POST['FirstUsername']);
-				$salt = rand();
+				$salt = mt_rand();
 				$password = sha1(htmlspecialchars($_POST['FirstPassword']).$salt);
 				$description = htmlspecialchars($_POST['description']);
 				$ipAddress = getClientIP();
-				$action = "hey there";
+				$action = "Insert";
 
 				//prepare statments
 				$resultForUser_info = pg_prepare($conn, "user_infoInsert",
@@ -51,6 +54,37 @@
 				header("location: home.php");
 				pg_close($conn);
 			}
+
+			//login handling
+			if(isset($_POST['username'])){
+				//making connection with database
+				$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
+					or die('Could not connect: ' . pg_last_error());
+
+				//set varibles
+				$username = htmlspecialchars($_POST['username']);
+				$password = htmlspecialchars($_POST['password']);
+
+
+				$resultForPassLookUp = pg_prepare($conn, "passLookUp",
+				'SELECT password_hash, salt FROM lab8.authentication
+				 WHERE username LIKE $1')
+				or die("passLookUP Prepare fail: ".pg_last_error());
+
+				$resultForPassLookUp = pg_execute($conn,"passLookUp",
+				array($username)) or die("passLookUp Execute Fail: ".pg_last_error());
+					$line = pg_fetch_array($resultForPassLookUp, null, PGSQL_ASSOC);
+					$tempPass = $line['password_hash'];
+					if($tempPass == sha1($password.$line['salt'])){
+						$_SESSION['user'] = $username;
+						header("location: home.php");
+					}
+
+				//closing connecting with databse
+				pg_close($conn);
+			}
+
+
 				/*
 
 

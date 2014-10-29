@@ -5,15 +5,22 @@
 			//including the nesesary things for the database connection
 			require("../secure/database.php");
 
-
+			//starting the session
+			session_start();
 
 			 //create connection with database
 
-			$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
-			 or die('Could not connect: ' . pg_last_error());
+			/*$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
+			 or die('Could not connect: ' . pg_last_error());*/
 
-			
 
+
+			if(isset($_POST['FirstUsername'])){
+				
+
+			}
+
+				/*
 			 require("viewfuncs.php");
 
 			$search_by;
@@ -177,7 +184,7 @@
 			    }
 			}
 
-
+		*/
 
 
 

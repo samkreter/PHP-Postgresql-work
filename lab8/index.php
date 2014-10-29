@@ -32,7 +32,7 @@
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-
+    <?php require("phplogic.php"); ?>
     <!-- Navigation -->
     <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
         <div class="container">
@@ -87,18 +87,18 @@
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2">
               <h2>Register New User</h2>
-                <form role="form">
+                <form role="form" method="POST" action="<?=$_SERVER['PHP_SELF']?>">
                     <div class="form-group">
                       <label for="InputFirstUsername">UserName</label>
-                      <input type="username" class="form-control" id="FirstUsername" placeholder="Enter Username">
+                      <input type="username" class="form-control" name="FirstUsername" placeholder="Enter Username">
                     </div>
                     <div class="form-group">
                       <label for="InputNewPassword">Enter Password</label>
-                      <input type="password" class="form-control" id="FirstPassword" placeholder="Password">
+                      <input type="password" class="form-control" name="FirstPassword" placeholder="Password">
                     </div>
                     <div class="form-group">
                       <label for="InputPasswordTester">Re-Enter Password</label>
-                      <input type="password" class="form-control" id="reEnterPass" placeholder="Password">
+                      <input type="password" class="form-control" name="reEnterPass" placeholder="Password">
                     </div>
                     <button type="submit" class="btn btn-default">Submit</button>
                 </form>
@@ -115,11 +115,11 @@
                       <form role="form">
                           <div class="form-group">
                             <label for="InputUsername">UserName</label>
-                            <input type="username" class="form-control" id="username" placeholder="Enter Username">
+                            <input type="username" class="form-control" name="username" placeholder="Enter Username">
                           </div>
                           <div class="form-group">
                             <label for="InputPassword">Password</label>
-                            <input type="password" class="form-control" id="password" placeholder="Password">
+                            <input type="password" class="form-control" name="password" placeholder="Password">
                           </div>
                           <button type="submit" class="btn btn-default">Submit</button>
                       </form>

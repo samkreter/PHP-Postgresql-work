@@ -21,7 +21,8 @@
 				$salt = rand();
 				$password = sha1(htmlspecialchars($_POST['FirstPassword']).$salt);
 				$description = htmlspecialchars($_POST['description']);
-				$ipAdress = getClientIP();
+				$ipAddress = getClientIP();
+				$action = "hey there";
 
 				//prepare statments
 				$resultForUser_info = pg_prepare($conn, "user_infoInsert",
@@ -44,7 +45,7 @@
 				array($username,$password,$salt)) or die("AuthenticationInsert Execute Fail: ".pg_last_error());
 
 				$resultForLog = pg_execute($conn, "logInsert",
-				array($username,$ip_adress,$action)) or die("LogInsert Execute Fail: ".pg_last_error());
+				array($username,$ipAddress,$action)) or die("LogInsert Execute Fail: ".pg_last_error());
 			}
 				/*
 			 require("viewfuncs.php");

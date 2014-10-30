@@ -1,7 +1,6 @@
 <?php
-
-
-if(!isset($_SESSION['user'])){
+session_start();
+if($_SESSION['loggedin'] !== true){
   header("location: index.php");
 }
 
@@ -79,7 +78,7 @@ if(!isset($_SESSION['user'])){
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
-                        <h1 class="brand-heading">DB LOG IN</h1>
+                        <h1 class="brand-heading">Hello <?php echo $_SESSION['user']; ?></h1>
                         <p class="intro-text">The log in system that will change your<br><b>LIFE!!!!!!!</b></p>
                     </div>
                 </div>

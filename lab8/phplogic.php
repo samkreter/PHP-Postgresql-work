@@ -21,7 +21,7 @@
 				//set up varibles
 				$username = htmlspecialchars($_POST['FirstUsername']);
 				$salt = mt_rand();
-				$password = sha1(htmlspecialchars($_POST['FirstPassword']).$salt);
+				$password = sha1($salt.$_POST['FirstPassword']);
 				$description = htmlspecialchars($_POST['description']);
 				$ipAddress = getClientIP();
 				$action = "Insert";
@@ -51,7 +51,7 @@
 
 				$_SESSION['user'] = $username;
 
-				header("location: home.php");
+				//header("location: home.php");###################################################
 				pg_close($conn);
 			}
 
@@ -72,18 +72,22 @@
 
 				$resultForPassLookUp = pg_execute($conn,"passLookUp",
 				array($username)) or die("passLookUp Execute Fail: ".pg_last_error());
+
 				if(pg_num_rows($resultForPassLookUp) == 0){
-					header("location: error.php");
+					echo "<script>alert('you messed up bro');</script>";
 				}
 				else{
-					$line = pg_fetch_array($resultForPassLookUp, null, PGSQL_ASSOC);
-					$tempPass = $line['password_hash'];
-					if($tempPass == sha1($password.$line['salt'])){
+				$line = pg_fetch_array($resultForPassLookUp, null, PGSQL_ASSOC);
+				$salt = intval($line['salt']);
+				$tempPass = $line['password_hash'];
+
+					if($tempPass == sha1($salt.$_POST['password'])){
+						$_SESSION['loggedin'] = true;	
 						$_SESSION['user'] = $username;
 						header("location: home.php");
 					}
 					else{
-						header("location: error.php")
+						echo '<div style="height:20px;color:red;">wrong password</div>';
 					}
 				}
 				//closing connecting with databse

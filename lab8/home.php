@@ -80,11 +80,35 @@ if($_SESSION['loggedin'] !== true){
                     <div class="col-md-8 col-md-offset-2">
                         <h1 class="brand-heading">Hello <?php echo $_SESSION['user']; ?></h1>
                         <p class="intro-text">The log in system that will change your<br><b>LIFE!!!!!!!</b></p>
+                        <!-- Button trigger modal -->
+                          <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+                            Update
+                          </button>
                     </div>
                 </div>
             </div>
         </div>
     </header>
+    <!--######################bad infile css...but it works..so....yea###################### -->
+    <style>.modal-content{background-color:black;}</style>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+          </div>
+          <div class="modal-body">
+            hey there
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Footer -->
     <footer>

@@ -4,6 +4,8 @@ if($_SESSION['loggedin'] !== true){
   header("location: index.php");
 }
 
+require("homelogic.php");
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,10 +38,19 @@ if($_SESSION['loggedin'] !== true){
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
+<!--######################bad infile css...but it works..so....yea###################### -->
+<style>
+.modal-content{
+  background-color:black;
+ }
+
+
+
+</style>
+
 </head>
 
 <body id="page-top" data-spy="scroll" data-target=".navbar-fixed-top">
-    <?php require("phplogic.php"); ?>
     <!-- Navigation -->
     <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
         <div class="container">
@@ -89,22 +100,23 @@ if($_SESSION['loggedin'] !== true){
             </div>
         </div>
     </header>
-    <!--######################bad infile css...but it works..so....yea###################### -->
-    <style>.modal-content{background-color:black;}</style>
+
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
+          <form method="POST" action="<?php $_SERVER['PHP_SELF'] ?>">
           <div class="modal-header">
-            <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            <h4 class="modal-title" id="myModalLabel"><?php echo $_SESSION['user']; ?></h4>
           </div>
           <div class="modal-body">
-            hey there
+            <label for="InputDescription">Enter Description</label>
+            <textarea class="form-control" name="HomeDescription" row="3"></textarea>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </div>
       </div>

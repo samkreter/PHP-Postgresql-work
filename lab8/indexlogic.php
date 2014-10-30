@@ -22,7 +22,7 @@
 				$username = htmlspecialchars($_POST['FirstUsername']);
 				$salt = mt_rand();
 				$password = sha1($salt.$_POST['FirstPassword']);
-				$description = htmlspecialchars($_POST['description']);
+				$description = "";
 				$ipAddress = getClientIP();
 				$action = "Insert";
 
@@ -51,7 +51,7 @@
 
 				$_SESSION['user'] = $username;
 
-				//header("location: home.php");###################################################
+				header("location: home.php");
 				pg_close($conn);
 			}
 
@@ -82,7 +82,7 @@
 				$tempPass = $line['password_hash'];
 
 					if($tempPass == sha1($salt.$_POST['password'])){
-						$_SESSION['loggedin'] = true;	
+						$_SESSION['loggedin'] = true;
 						$_SESSION['user'] = $username;
 						header("location: home.php");
 					}

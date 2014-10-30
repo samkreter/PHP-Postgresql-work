@@ -1,4 +1,4 @@
-<?php require("phplogic.php"); ?>
+<?php require("indexlogic.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -98,7 +98,6 @@
                     </div>
                     <div class="form-group">
                       <label for="InputDescription">Enter Description</label>
-                      <!-- <input type="text" class="form-control" name="description"></input> -->
                       <textarea class="form-control" name="description" row="3"></textarea>
                     </div>
                     <button type="submit" class="btn btn-default">Submit</button>

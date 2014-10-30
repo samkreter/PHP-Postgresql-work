@@ -1,5 +1,8 @@
 <?php
 
+
+	require_once("../secure/database.php");
+
 	//all helper functions for all of the necessary actions
 	// Function to get the client IP address
 	function getClientIP() {
@@ -21,7 +24,26 @@
 	    return $ipaddress;
 	}
 
-	
+	function printUserInfo(){
+		//open databse connection
+		$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
+			or die('Could not connect: ' . pg_last_error());
+
+			$username = $_SESSION['user'];
+			
+
+			//close db connection
+			pg_close($conn);
+	}
+
+	function printUserLog(){
+
+		$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
+			or die('Could not connect: ' . pg_last_error());
+
+			//close connection
+			pg_close($conn);
+	}
 
 	/*
 	//logic for the insert page

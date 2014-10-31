@@ -33,7 +33,7 @@
 			$resultFordata = pg_prepare($conn,"gettingData",
 			"SELECT registration_date, description, ip_address FROM lab8.user_info
 			 INNER JOIN lab8.log ON lab8.log.username = lab8.user_info.username
-			 WHERE lab8.log.username LIKE $1 AND action LIKE 'Insert'")
+			 WHERE lab8.log.username LIKE $1 AND action LIKE 'Register'")
 			 or die("gettingData prepare fail: ".pg_last_error());
 
 			$resultFordata = pg_execute($conn,"gettingData",array($_SESSION['user']))

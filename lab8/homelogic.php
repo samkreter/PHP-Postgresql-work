@@ -24,14 +24,23 @@
         $resultForUpdating = pg_prepare($conn,"updating",'UPDATE lab8.user_info
         SET description = $1 WHERE username LIKE $2') or die("Updating prepare Fail: ".pg_last_error());
 
-        //update execute stamtnet
+        //update execute stamtnet 
         $resultForUpdating = pg_execute($conn,"updating", array($description, $username))
         or die("Updating Execute fail: ".pg_last_error());
 
+        //update the log with the action that just occured
+        $resultForlog = pg_prepare($conn,"logUpdate","INSERT INTO lab8.log
+          VALUES(DEFAULT,$1,$2,DEFAULT,$3)") or die("logUpdate prepare fail: ".pg_last_error());
+        $resultForlog = pg_execute($conn,"logUpdate",
+          array($_SESSION['user'],getClientIP(),"Updated Description"))
+          or die("logupdate execute fail: ".pg_last_error());
 
 
+
+        pg_free_result($resultForUpdating);
+        pg_free_result($resultForlog);
         pg_close($conn);
       }
 
-    
+
 ?>

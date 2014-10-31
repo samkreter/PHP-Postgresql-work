@@ -24,7 +24,7 @@
 				$password = sha1($salt.$_POST['FirstPassword']);
 				$description = "";
 				$ipAddress = getClientIP();
-				$action = "Insert";
+				$action = "Register";
 
 				//prepare statments
 				$resultForUser_info = pg_prepare($conn, "user_infoInsert",
@@ -92,13 +92,22 @@
 					if($tempPass == sha1($salt.$_POST['password'])){
 						$_SESSION['loggedin'] = true;
 						$_SESSION['user'] = $username;
+
+						$resultForlog = pg_prepare($conn,"logUpdate","INSERT INTO lab8.log
+							VALUES(DEFAULT,$1,$2,DEFAULT,$3)") or die("logUpdate prepare fail: ".pg_last_error());
+
+						$resultForlog = pg_execute($conn,"logUpdate",
+						array($username,getClientIP(),"login"))
+						or die("logupdate execute fail: ".pg_last_error());
+
 						header("location: home.php");
 					}
 					else{
 						echo '<div style="height:20px;color:red;">wrong password</div>';
 					}
 				}
-				//closing connecting with databse
+				//closing connections
+				pg_free_result($resultForLog);
 				pg_close($conn);
 			}
 

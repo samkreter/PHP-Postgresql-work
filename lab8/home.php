@@ -43,9 +43,15 @@ require("homelogic.php");
 .modal-content{
   background-color:black;
  }
-
-
-
+.tablestuff{
+   background-color:black;
+ }
+TD{
+   font-size: 15pt;
+   }
+tr{
+  font-size: 20pt;
+}
 </style>
 
 </head>
@@ -91,6 +97,7 @@ require("homelogic.php");
                     <div class="col-md-8 col-md-offset-2">
                         <h1 class="brand-heading">Hello <?php echo $_SESSION['user']; ?></h1>
                         <p class="intro-text">The log in system that will change your<br><b>LIFE!!!!!!!</b></p>
+                        <?php  printUserLog() ?>
                         <!-- Button trigger modal -->
                           <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
                             Update

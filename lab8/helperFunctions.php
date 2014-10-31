@@ -24,7 +24,7 @@
 	    return $ipaddress;
 	}
 
-	function printUserInfo(){
+/*	function printUserInfo(){
 		//open databse connection
 		$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
 			or die('Could not connect: ' . pg_last_error());
@@ -35,7 +35,7 @@
 
 			//close db connection
 			pg_close($conn);
-	}
+	}*/
 
 	function printUserLog(){
 
@@ -43,24 +43,23 @@
 			or die('Could not connect: ' . pg_last_error());
 
 
-			$result = pg_prepare($conn,"getLog","SELECT * FROM lab8.log")
+			$result = pg_prepare($conn,"getLog","SELECT * FROM lab8.log
+			WHERE username LIKE $1")
 			or die("getLog prepare fail: ".pg_last_error());
 
-			$reslut = pg_execute($conn,"getLog",array())
+			$result = pg_execute($conn,"getLog",array($_SESSION['user']))
 			or die("getLog execute fail: ".pg_last_error());
 
-			$line = pg_fetch_array($result, null, PGSQL_ASSOC);
 
 
 			//Printing results in HTML
 			echo "<br>There where <em>" . pg_num_rows($result) . "</em> rows returned<br><br>\n";
 
 
-			echo "<table border='1'>";
+			echo "<table class='tablestuff' border='1'>";
 
 			//account for added form row
 			echo "<tr>";
-			echo "<th width=\"135\">Action</th>";
 
 			//checking the number of fields return to populate header
 			$numFields = pg_num_fields($result);
@@ -75,24 +74,6 @@
 			//populating table with the results
 			while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
 				echo "\t<tr>\n";
-
-				if($search_by == "city"){
-					$pkey = "id";
-				}
-				else {
-					$pkey = "country_code";
-				}
-
-				echo '<td>';
-				?>
-				<form method="POST" action="<?=$_SERVER['PHP_SELF']?>">
-				<?php
-				echo '<input type="submit" id="edit-button" name="type" value="Edit"/>';
-					echo '<input type="submit" name="type" value="Remove"/>';
-				echo '<input type="hidden" name="pkey" value="'.$line[$pkey].'"/>';
-				echo '<input type="hidden" name="table" value="'.$search_by.'"/>';
-				echo '</form>';
-				echo '</td>';
 
 
 

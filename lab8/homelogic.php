@@ -9,7 +9,7 @@
 
       //starting the session
       session_start();
-  
+
 
       if(isset($_POST['HomeDescription'])){
 
@@ -19,7 +19,6 @@
 
         //set up varibles
         $description = htmlspecialchars($_POST['HomeDescription']);
-        $username = $_SESSION['user'];
 
         //updateprepare stamtnet
         $resultForUpdating = pg_prepare($conn,"updating",'UPDATE lab8.user_info
@@ -33,3 +32,6 @@
 
         pg_close($conn);
       }
+
+    
+?>

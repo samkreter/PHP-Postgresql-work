@@ -30,7 +30,8 @@
 			or die('Could not connect: ' . pg_last_error());
 
 			$username = $_SESSION['user'];
-			
+
+			$resultFordata = pg_prepare($conn,"gettingData","SELECT ")
 
 			//close db connection
 			pg_close($conn);
@@ -41,62 +42,79 @@
 		$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
 			or die('Could not connect: ' . pg_last_error());
 
+
+			$result = pg_prepare($conn,"getLog","SELECT * FROM lab8.log")
+			or die("getLog prepare fail: ".pg_last_error());
+
+			$reslut = pg_execute($conn,"getLog",array())
+			or die("getLog execute fail: ".pg_last_error());
+
+			$line = pg_fetch_array($result, null, PGSQL_ASSOC);
+
+
+			//Printing results in HTML
+			echo "<br>There where <em>" . pg_num_rows($result) . "</em> rows returned<br><br>\n";
+
+
+			echo "<table border='1'>";
+
+			//account for added form row
+			echo "<tr>";
+			echo "<th width=\"135\">Action</th>";
+
+			//checking the number of fields return to populate header
+			$numFields = pg_num_fields($result);
+			//populating the header
+			for($i = 0;$i < $numFields; $i++){
+				$fieldName = pg_field_name($result, $i);
+				echo "<th width=\"135\">" . $fieldName . "</th>\n";
+			}
+
+			echo "</tr>";
+
+			//populating table with the results
+			while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+				echo "\t<tr>\n";
+
+				if($search_by == "city"){
+					$pkey = "id";
+				}
+				else {
+					$pkey = "country_code";
+				}
+
+				echo '<td>';
+				?>
+				<form method="POST" action="<?=$_SERVER['PHP_SELF']?>">
+				<?php
+				echo '<input type="submit" id="edit-button" name="type" value="Edit"/>';
+					echo '<input type="submit" name="type" value="Remove"/>';
+				echo '<input type="hidden" name="pkey" value="'.$line[$pkey].'"/>';
+				echo '<input type="hidden" name="table" value="'.$search_by.'"/>';
+				echo '</form>';
+				echo '</td>';
+
+
+
+				foreach ($line as $col_value) {
+
+					echo "\t\t<td>$col_value</td>\n";
+				}
+				echo "\t</tr>\n";
+			}
+			echo "</table>\n";
+
+
+			// Free resultset
+			pg_free_result($result);
 			//close connection
 			pg_close($conn);
 	}
 
 	/*
-	//logic for the insert page
-	function insert($name,$cCode,$district,$population){
-
-		$result = pg_prepare($GLOBALS['conn'], "city_insert", 'INSERT INTO lab4.city VALUES(DEFAULT,$1,$2,$3,$4)')
-		or die("Prepare fail: ".pg_last_error());
-		if(pg_execute($GLOBALS['conn'], "city_insert",array($name,$cCode,$district,$population))){
-			$GLOBALS['toggle'] = 0;
-			echo "<br><strong>insert was successful</strong>";
-		}
-		else{
-			echo "Insert did not work";
-		}
-
-	}
 
 
-	//locgic for the remove action
-	function remove($pkey, $search_by){
 
-		if($search_by == "city"){
-			$result = pg_prepare($GLOBALS['conn'], "city_delete", 'DELETE FROM lab4.city AS ci WHERE ci.id ='.$pkey)
-			or die("Prepare fail: ".pg_last_error());
-			if(pg_execute($GLOBALS['conn'], "city_delete",array())){
-				echo "Delete was successful";
-			}
-			else{
-				echo "Delete was not successful";
-			}
-		}
-		else if($search_by == "country"){
-			$result = pg_prepare($GLOBALS['conn'], "country_delete", "DELETE FROM lab4.country AS co WHERE co.country_code ILIKE '$pkey'")
-			or die("Prepare fail: ".pg_last_error());
-			if(pg_execute($GLOBALS['conn'], "country_delete",array())){
-				echo "<br><strong>Delete was successful</strong>";
-			}
-			else{
-				echo "Delete was not successful";
-			}
-		}
-		else if($search_by == "language"){
-			$result = pg_prepare($GLOBALS['conn'], "langauge_delete", "DELETE FROM lab4.country_language AS lang WHERE lang.country_code ILIKE '$pkey'")
-			or die("Prepare fail: ".pg_last_error());
-			if(pg_execute($GLOBALS['conn'], "langauge_delete",array()) or die(pg_last_error())){
-				echo "<br><strong>Delete was successful</strong>";
-			}
-			else{
-				echo "Delete was not successful";
-			}
-		}
-
-	}
 	//logic for all the editing
 	function edit($pkey, $search_by){
 

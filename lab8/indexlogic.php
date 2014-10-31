@@ -49,10 +49,18 @@
 				$resultForLog = pg_execute($conn, "logInsert",
 				array($username,$ipAddress,$action)) or die("LogInsert Execute Fail: ".pg_last_error());
 
+				$_SESSION['loggedin'] = true;
 				$_SESSION['user'] = $username;
 
-				header("location: home.php");
+				//free all the necesary items
+				pg_free_result($resultForUser_info);
+				pg_free_result($resultForAuthentication);
+				pg_free_result($resultForLog);
 				pg_close($conn);
+
+				//redirect loged in user to homepage
+				header("location: home.php");
+
 			}
 
 			//login handling

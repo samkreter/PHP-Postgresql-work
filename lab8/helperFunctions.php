@@ -24,18 +24,31 @@
 	    return $ipaddress;
 	}
 
-/*	function printUserInfo(){
+  function printUserInfo(){
 		//open databse connection
 		$conn = pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
 			or die('Could not connect: ' . pg_last_error());
 
-			$username = $_SESSION['user'];
 
-			$resultFordata = pg_prepare($conn,"gettingData","SELECT ")
+			$resultFordata = pg_prepare($conn,"gettingData",
+			"SELECT registration_date, description, ip_address FROM lab8.user_info
+			 INNER JOIN lab8.log ON lab8.log.username = lab8.user_info.username
+			 WHERE lab8.log.username LIKE $1 AND action LIKE 'Insert'")
+			 or die("gettingData prepare fail: ".pg_last_error());
 
-			//close db connection
+			$resultFordata = pg_execute($conn,"gettingData",array($_SESSION['user']))
+			or die("gettingData Execute fail: ".pg_last_error());
+
+			$line = pg_fetch_array($resultFordata, null, PGSQL_ASSOC);
+
+			echo "<b>IP Address: </b><span class'lower'>".$line['ip_address']."</span><br>";
+			echo "<b>Date of Registration: <b><span class='lower'>".$line['registration_date']."</span><br>";
+			echo "<b>Description</b><br><span class='lower'>".$line['description']."</span>";
+
+			//close necssary items
+			pg_free_result($resultFordata);
 			pg_close($conn);
-	}*/
+	}
 
 	function printUserLog(){
 

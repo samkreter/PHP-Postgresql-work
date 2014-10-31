@@ -40,6 +40,9 @@ require("homelogic.php");
 
 <!--######################bad infile css...but it works..so....yea###################### -->
 <style>
+.intro .intro-body .brand-heading {
+    font-size: 40px;
+}
 .modal-content{
   background-color:black;
  }
@@ -51,6 +54,9 @@ TD{
    }
 tr{
   font-size: 20pt;
+}
+.lower{
+  font-size:15pt;
 }
 </style>
 
@@ -95,8 +101,8 @@ tr{
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 col-md-offset-2">
-                        <h1 class="brand-heading">Hello <?php echo $_SESSION['user']; ?></h1>
-                        <p class="intro-text">The log in system that will change your<br><b>LIFE!!!!!!!</b></p>
+                        <h3 class="brand-heading">Hello <?php echo $_SESSION['user']; ?></h3>
+                        <p class="intro-text"><?php printUserInfo() ?></p>
                         <?php  printUserLog() ?>
                         <!-- Button trigger modal -->
                           <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">

@@ -1,4 +1,8 @@
 <?php require("indexlogic.php");
+  if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
+    $redirect = "https//".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URL'];
+    header("location: $redirect");
+  }
   session_start();
   if($_SESSION['loggedin'] == true){
     header("location: home.php");

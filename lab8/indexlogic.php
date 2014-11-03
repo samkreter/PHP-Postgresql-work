@@ -82,7 +82,7 @@
 				array($username)) or die("passLookUp Execute Fail: ".pg_last_error());
 
 				if(pg_num_rows($resultForPassLookUp) == 0){
-					echo "<script>alert('you messed up bro');</script>";
+					echo "<div class='loginError'>Bro your Username or Password do not match - Please try again</div>";
 				}
 				else{
 				$line = pg_fetch_array($resultForPassLookUp, null, PGSQL_ASSOC);
@@ -103,7 +103,7 @@
 						header("location: home.php");
 					}
 					else{
-						echo '<div style="height:20px;color:red;">wrong password</div>';
+						echo "<div class='loginError'>Bro your Username or Password do not match - Please try again</div>";
 					}
 				}
 				//closing connections

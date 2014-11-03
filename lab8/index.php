@@ -1,4 +1,9 @@
-<?php require("indexlogic.php"); ?>
+<?php require("indexlogic.php");
+  session_start();
+  if($_SESSION['loggedin'] == true){
+    header("location: home.php");
+  }
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,6 +34,14 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <style>
+      .loginError{
+        height: 40px;
+        background-color: red;
+        font-size: 20px;
+      }
+    </style>
 
 </head>
 
@@ -95,10 +108,6 @@
                     <div class="form-group">
                       <label for="InputNewPassword">Enter Password</label>
                       <input type="password" class="form-control" name="FirstPassword" placeholder="Password">
-                    </div>
-                    <div class="form-group">
-                      <label for="InputDescription">Enter Description</label>
-                      <textarea class="form-control" name="description" row="3"></textarea>
                     </div>
                     <button type="submit" class="btn btn-default">Submit</button>
                 </form>

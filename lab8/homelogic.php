@@ -20,12 +20,13 @@
         //set up varibles
         $description = htmlspecialchars($_POST['HomeDescription']);
 
+
         //updateprepare stamtnet
         $resultForUpdating = pg_prepare($conn,"updating",'UPDATE lab8.user_info
         SET description = $1 WHERE username LIKE $2') or die("Updating prepare Fail: ".pg_last_error());
 
-        //update execute stamtnet 
-        $resultForUpdating = pg_execute($conn,"updating", array($description, $username))
+        //update execute stamtnet
+        $resultForUpdating = pg_execute($conn,"updating", array($description, $_SESSION['user']))
         or die("Updating Execute fail: ".pg_last_error());
 
         //update the log with the action that just occured

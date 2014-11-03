@@ -87,9 +87,6 @@ tr{
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#Register">Register</a>
-                    </li>
-                    <li>
                         <a class="page-scroll" href="logout.php">Log Out</a>
                     </li>
                 </ul>

@@ -26,40 +26,60 @@
 				$ipAddress = getClientIP();
 				$action = "Register";
 
-				//prepare statments
-				$resultForUser_info = pg_prepare($conn, "user_infoInsert",
-				'INSERT INTO lab8.user_info VALUES($1,DEFAULT,$2)')
-				or die("User_infoInsert Prepare fail: ".pg_last_error());
+				$resultForChecking = pg_prepare($conn,"checking",'SELECT username
+					FROM lab8.user_info WHERE username LIKE $1')
+					or die("checking pg prepare fail: ".pg_last_error());
+				$resultForChecking = pg_execute($conn,"checking",array($username))
+					or die("checking execute fail: ".pg_last_error());
 
-				$resultForAuthentication = pg_prepare($conn,"authenticationInsert",
-				'INSERT INTO lab8.authentication VALUES($1,$2,$3)')
-				or die("AuthenticationInsert Prepare fail: ".pg_last_error());
+				if(pg_num_rows($resultForChecking)){
+					echo "<div class='loginError'>Bro username already exists - Please try again</div>";
+				}
+				else{
 
-				$reslutForLog = pg_prepare($conn,"logInsert",
-				'INSERT INTO lab8.log VALUES(DEFAULT,$1,$2,DEFAULT,$3)')
-				or die("logInsert Prespare Fail: ".pg_last_error());
+					//prepare statments for the inserting
+					$resultForUser_info = pg_prepare($conn, "user_infoInsert",
+					'INSERT INTO lab8.user_info VALUES($1,DEFAULT,$2)')
+					or die("User_infoInsert Prepare fail: ".pg_last_error());
 
-				//execute statments
-				$resultForUser_info = pg_execute($conn, "user_infoInsert",
-				array($username,$description)) or die("User_infoInsert Execute Fail: ".pg_last_error());
+					$resultForAuthentication = pg_prepare($conn,"authenticationInsert",
+					'INSERT INTO lab8.authentication VALUES($1,$2,$3)')
+					or die("AuthenticationInsert Prepare fail: ".pg_last_error());
 
-				$resultForAuthentication = pg_execute($conn, "authenticationInsert",
-				array($username,$password,$salt)) or die("AuthenticationInsert Execute Fail: ".pg_last_error());
+					$reslutForLog = pg_prepare($conn,"logInsert",
+					'INSERT INTO lab8.log VALUES(DEFAULT,$1,$2,DEFAULT,$3)')
+					or die("logInsert Prespare Fail: ".pg_last_error());
 
-				$resultForLog = pg_execute($conn, "logInsert",
-				array($username,$ipAddress,$action)) or die("LogInsert Execute Fail: ".pg_last_error());
+					//execute statments
+					$resultForUser_info = pg_execute($conn, "user_infoInsert",
+					array($username,$description)) or die("User_infoInsert Execute Fail: ".pg_last_error());
 
-				$_SESSION['loggedin'] = true;
-				$_SESSION['user'] = $username;
+					$resultForAuthentication = pg_execute($conn, "authenticationInsert",
+					array($username,$password,$salt)) or die("AuthenticationInsert Execute Fail: ".pg_last_error());
 
-				//free all the necesary items
-				pg_free_result($resultForUser_info);
-				pg_free_result($resultForAuthentication);
-				pg_free_result($resultForLog);
+					$resultForLog = pg_execute($conn, "logInsert",
+					array($username,$ipAddress,$action)) or die("LogInsert Execute Fail: ".pg_last_error());
+
+					$_SESSION['loggedin'] = true;
+					$_SESSION['user'] = $username;
+
+
+					//free necessary items
+					pg_free_result($resultForChecking);
+					pg_free_result($resultForUser_info);
+					pg_free_result($resultForAuthentication);
+					pg_free_result($resultForLog);
+					pg_close($conn);
+
+					//redirect loged in user to homepage
+					header("location: home.php");
+				}
+
+				//free all the necesary items if useranem already exists
+				pg_free_result($resultForChecking);
 				pg_close($conn);
 
-				//redirect loged in user to homepage
-				header("location: home.php");
+
 
 			}
 

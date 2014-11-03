@@ -4,6 +4,13 @@
 	require_once("../secure/database.php");
 
 	//all helper functions for all of the necessary actions
+
+	//return a db connection
+	function dbconnect(){
+		return pg_connect(HOST." ".DBNAME." ".USERNAME." ".PASSWORD)
+			or die('Could not connect: ' . pg_last_error());
+	}
+
 	// Function to get the client IP address
 	function getClientIP() {
 	    $ipaddress = '';

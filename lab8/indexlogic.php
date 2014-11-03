@@ -75,7 +75,7 @@
 					header("location: home.php");
 				}
 
-				//free all the necesary items if useranem already exists
+				//free all the necesary items if useranem already ex
 				pg_free_result($resultForChecking);
 				pg_close($conn);
 

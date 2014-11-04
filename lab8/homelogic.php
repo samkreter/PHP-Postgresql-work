@@ -37,7 +37,7 @@
           or die("logupdate execute fail: ".pg_last_error());
 
 
-
+        //close all the connections 
         pg_free_result($resultForUpdating);
         pg_free_result($resultForlog);
         pg_close($conn);

@@ -1,8 +1,11 @@
 <?php
+//get current session
 session_start();
+//redirect if not logged in
 if($_SESSION['loggedin'] !== true){
   header("location: index.php");
 }
+//redirect for https
 if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
   $redirect = "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
   header("location: $redirect");
@@ -42,7 +45,7 @@ require("homelogic.php");
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 
-<!--######################bad infile css...but it works..so....yea###################### -->
+<!--######################bad in file css...but it works..so....yea###################### -->
 <style>
 .intro .intro-body .brand-heading {
     font-size: 40px;

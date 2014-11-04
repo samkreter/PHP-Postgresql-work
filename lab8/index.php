@@ -1,9 +1,13 @@
 <?php require("indexlogic.php");
+
+//redirect for https
   if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
     $redirect = "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
     header("location: $redirect");
   }
+  //get the current session or start a new one
   session_start();
+  //redirect if logged in
   if($_SESSION['loggedin'] == true){
     header("location: home.php");
   }
@@ -38,7 +42,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+<!-- ################################## crappy in file css but it does work so ########## -->
     <style>
       .loginError{
         height: 40px;
@@ -136,11 +140,6 @@
                           </div>
                           <button type="submit" class="btn btn-default">Submit</button>
                       </form>
-                      <?php
-                        if($_SESSION['user'] == '-1'){
-                          echo "<b>Wrong Password</b>";
-                        }
-                      ?>
                   </div>
                 </div>
             </div>

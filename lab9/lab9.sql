@@ -21,4 +21,10 @@ FROM tl_2010_us_uac10 WHERE ST_Overlaps(coords,
 #Query5
 SELECT one.name10 AS nameOne, two.name10 AS nameTwo
 FROM tl_2010_us_uac10 AS one, tl_2010_us_uac10 AS two
-WHERE ST_Intersects(one.coords, two.coords) AND  one.gid != two.gid AND one.gid < two.gid; 
+WHERE ST_Intersects(one.coords, two.coords) AND  one.gid != two.gid AND one.gid < two.gid;
+#Query6
+SELECT u.name10, COUNT(ST_Intersects(s.coords,u.coords)) AS statesInterCount FROM tl_2010_us_uac10 AS u CROSS JOIN tl_2010_us_state10 AS s
+WHERE ST_Intersects(s.coords,u.coords)
+GROUP BY u.gid
+HAVING (u.aland10+u.awater10)/1000000 > 1500 and count(ST_Intersects(s.coords,u.coords)) > 1
+ORDER BY statesInterCount, u.name10;

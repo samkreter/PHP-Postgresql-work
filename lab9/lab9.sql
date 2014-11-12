@@ -8,3 +8,8 @@ SELECT stusps10 AS USPS, name10 AS name
 FROM tl_2010_us_state10 WHERE ST_Touches(coords,
   (SELECT coords FROM tl_2010_us_state10
     WHERE stusps10 IN ('NC'))) ORDER BY name ASC;
+#Query3
+SELECT name10 AS name FROM tl_2010_us_uac10
+WHERE ST_Within(coords,
+  (SELECT coords FROM tl_2010_us_state10
+    WHERE stusps10 IN ('CO'))) ORDER BY name ASC;

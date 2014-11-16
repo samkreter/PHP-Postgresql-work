@@ -13,10 +13,10 @@ CREATE TABLE group_standings(
 
 );
 
- \copy group_standings FROM /facstaff/klaricm/public_cs3380/lab10/lab10_data.csv WITH CSV HEADER
-
-CREATE OR REPLACE FUNCTION
-calc_batting_average_v1(integer, integer)
-RETURNS float AS $$
-SELECT $1 ::float / $2 AS result;
-$$ LANGUAGE SQL;
+--  \copy group_standings FROM /facstaff/klaricm/public_cs3380/lab10/lab10_data.csv WITH CSV HEADER
+--
+-- CREATE OR REPLACE FUNCTION
+-- calc_batting_average_v1(integer, integer)
+-- RETURNS float AS $$
+-- SELECT $1 ::float / $2 AS result;
+-- $$ LANGUAGE SQL;

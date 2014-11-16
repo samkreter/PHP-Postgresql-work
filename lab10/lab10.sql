@@ -12,3 +12,5 @@ CREATE TABLE group_standings(
   points smallint NOT NULL CHECK(points >= 0)
 
 );
+
+ \copy group_standings FROM /facstaff/klaricm/public_cs3380/lab10/lab10_data.csv WITH CSV HEADER

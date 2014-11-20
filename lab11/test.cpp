@@ -18,10 +18,11 @@ int main(int argc, char** argv)
    const char * text;
    int columnNum = 0;
    int i = 0;
+   const char * datatype;
 
 
    rc = sqlite3_open("myDatabase.db", &db);
-
+   //check connection to database
    if( rc ){
       std::cout<< "Can't open database: %s\n", sqlite3_errmsg(db);
       return 1;
@@ -46,8 +47,9 @@ int main(int argc, char** argv)
                 text  = sqlite3_column_text (stmt, 0);
                 std::cout<<row<<" "<<text;
                 for(i=1;i<columnNum;i++){
+                  datatype = sqlite3_column_decltype(stmt,i);
                   text  = sqlite3_column_text (stmt, i);
-                  std::cout<<" "<<text;
+                  std::cout<<" "<<text<<" "<<datatype;
                 }
                 std::cout<<std::endl;
                 row++;

@@ -16,7 +16,8 @@ int main(int argc, char** argv)
 
    int rc;
    sqlite3_stmt * stmt;
-   const char *zSql = "Select * from mytable;";
+   const char *zSql;
+   char begin[100];
    int row = 1;
    const char * text;
    int columnNum = 0;
@@ -24,15 +25,27 @@ int main(int argc, char** argv)
    const char * datatype;
 
 
+  if(argc != 4)
+    {
+      std::cout << "USAGE: " << argv[0] << " <database file> <table name> <CSV file>" << std::endl;
+      return 1;
+    }
+
+
+   strcat(begin,"Select * from ");
+   strcat(begin,argv[2]);
+   strcat(begin,";");
+   zSql = begin;
+
    //file operations
-   ofstream csvFile(argv[1]);
+   ofstream csvFile(argv[3]);
    if(!csvFile.is_open()){
      std::cout<<"file couldn't open";
      return -1;
    }
 
 
-   rc = sqlite3_open("myDatabase.db", &db);
+   rc = sqlite3_open(argv[1], &db);
    //check connection to database
    if( rc ){
       std::cout<< "Can't open database: %s\n", sqlite3_errmsg(db);
@@ -88,10 +101,8 @@ int main(int argc, char** argv)
                   }
 
 
-                  std::cout<<" "<<text<<" "<<datatype;
                 }
-                std::cout<<std::endl;
-                row++;
+
             }
             else if (s == SQLITE_DONE) {
                 break;
@@ -106,7 +117,7 @@ int main(int argc, char** argv)
 
 
 
-
+   csvFile.close();
    sqlite3_close(db);
 
   return 0;

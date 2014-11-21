@@ -116,7 +116,7 @@ int main(int argc, char** argv)
 
 
 
-
+   sqlite3_finalize(stmt);
    csvFile.close();
    sqlite3_close(db);
 

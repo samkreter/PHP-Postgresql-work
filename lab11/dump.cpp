@@ -10,27 +10,23 @@ using namespace std;
 int main(int argc, char** argv)
 {
 
-
+   //declare all the nessary things
    sqlite3 *db;
-
-   int rc;
    sqlite3_stmt * stmt;
    const char *zSql;
    char begin[100];
-   int row = 1;
-   const char * text;
    int columnNum = 0;
    int i = 0;
-   const char * datatype;
 
 
+  //check the arguments
   if(argc != 4)
     {
       std::cout << "USAGE: " << argv[0] << " <database file> <table name> <CSV file>" << std::endl;
       return 1;
     }
 
-
+   //using classic string munipulation instead of the c++ string api
    strcat(begin,"Select * from ");
    strcat(begin,argv[2]);
    strcat(begin,";");
@@ -43,19 +39,18 @@ int main(int argc, char** argv)
      return -1;
    }
 
+    //open or create and check if the operation was succesful
+   sqlite3_open(argv[1], &db);
+   if(!db){
+      std::cout<< "Can't open database: ";
 
-   rc = sqlite3_open(argv[1], &db);
-   //check connection to database
-   if( rc ){
-      std::cout<< "Can't open database: %s\n", sqlite3_errmsg(db);
-      return 1;
    }else{
       std::cout<< "Opened database successfully\n";
    }
 
 
 
-
+   //prepare the statment to select the data
    sqlite3_prepare(db,zSql,strlen(zSql),&stmt,NULL);
 
     while (1) {
@@ -63,9 +58,7 @@ int main(int argc, char** argv)
 
             s = sqlite3_step (stmt);
             if (s == SQLITE_ROW) {
-                int bytes;
                 const unsigned char * text;
-                bytes = sqlite3_column_bytes(stmt, 0);
                 columnNum = sqlite3_column_count(stmt);
 
                 for(i=0;i<columnNum;i++){
@@ -114,14 +107,10 @@ int main(int argc, char** argv)
 
 
 
-
+  //close everytnig up
    sqlite3_finalize(stmt);
    csvFile.close();
    sqlite3_close(db);
 
   return 0;
 }
-
-
-
-//8821506

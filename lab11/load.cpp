@@ -57,8 +57,8 @@ int main(int argc, char** argv){
 
 
   //read and insert the lines from the file
-  while(readFile >> line){
-
+  while(std::getline(readFile, line)){
+    cout<<line<<endl;
     query = string("INSERT INTO ") + string(argv[2])+string(" VALUES(")+line+string(");");
 
     zSql = query.c_str();
